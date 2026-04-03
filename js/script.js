@@ -42,15 +42,15 @@ function loadSheetData() {
           count++;
 
           const name = clean(cols[1]);
-          const phone = clean(cols[2]);
-          const studentClass = clean(cols[4]); // ✅ FIXED
+          const phone = clean(cols[5]);
+          const studentClass = clean(cols[8]);
 
           html += `
             <tr>
               <td>${name}</td>
               <td>${phone}</td>
               <td>${studentClass}</td>
-              <td><span class="badge bg-success">New</span></td>
+              <td><span class="badge bg-success">Active</span></td>
             </tr>
           `;
         }
