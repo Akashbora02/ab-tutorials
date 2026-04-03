@@ -20,6 +20,8 @@ window.addEventListener("DOMContentLoaded", () => {
   loadSheetData();
   setupFilters();
   setupSearch();
+
+  startCounter();
 });
 
 // ===============================
