@@ -1,4 +1,6 @@
+// ===============================
 // LOAD COMPONENTS
+// ===============================
 function loadComponent(id, file) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -8,7 +10,9 @@ function loadComponent(id, file) {
     .then(data => el.innerHTML = data);
 }
 
+// ===============================
 // PAGE LOAD
+// ===============================
 window.addEventListener("DOMContentLoaded", () => {
   loadComponent("navbar", "components/navbar.html");
   loadComponent("footer", "components/footer.html");
@@ -18,7 +22,11 @@ window.addEventListener("DOMContentLoaded", () => {
   setupSearch();
 });
 
+// ===============================
 // GOOGLE SHEET DATA
+// ===============================
+let chartInstance = null;
+
 function loadSheetData() {
   const table = document.getElementById("studentTable");
   if (!table) return;
@@ -60,40 +68,62 @@ function loadSheetData() {
         }
       });
 
-      table.innerHTML = html;
+      table.innerHTML = html || "<tr><td colspan='4'>No Data</td></tr>";
       document.getElementById("totalStudents").innerText = count;
 
       // Latest class
       const validRows = rows.filter(r => r.trim());
-      const lastRow = validRows[validRows.length - 1];
-      const lastCols = lastRow.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+      if (validRows.length > 0) {
+        const lastRow = validRows[validRows.length - 1];
+        const lastCols = lastRow.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-      document.getElementById("latestClass").innerText = clean(lastCols[8]);
+        if (lastCols) {
+          document.getElementById("latestClass").innerText = clean(lastCols[8]);
+        }
+      }
 
       showChart(classCount);
 
+    })
+    .catch(() => {
+      table.innerHTML =
+        "<tr><td colspan='4' class='text-danger text-center'>Error loading data</td></tr>";
     });
 }
 
-// CLEAN
+// ===============================
+// CLEAN FUNCTION
+// ===============================
 function clean(value) {
   return value.replace(/"/g, "").trim();
 }
 
+// ===============================
 // FILTER
+// ===============================
 function setupFilters() {
-  document.getElementById("classFilter").addEventListener("change", filterTable);
+  const filter = document.getElementById("classFilter");
+  if (!filter) return;
+
+  filter.addEventListener("change", filterTable);
 }
 
+// ===============================
 // SEARCH
+// ===============================
 function setupSearch() {
-  document.getElementById("searchInput").addEventListener("input", filterTable);
+  const search = document.getElementById("searchInput");
+  if (!search) return;
+
+  search.addEventListener("input", filterTable);
 }
 
+// ===============================
 // FILTER LOGIC
+// ===============================
 function filterTable() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const selected = document.getElementById("classFilter").value;
+  const search = document.getElementById("searchInput")?.value.toLowerCase() || "";
+  const selected = document.getElementById("classFilter")?.value || "";
 
   const rows = document.querySelectorAll("#studentTable tr");
 
@@ -108,11 +138,19 @@ function filterTable() {
   });
 }
 
+// ===============================
 // CHART (PIE)
+// ===============================
 function showChart(classCount) {
   const ctx = document.getElementById("chart");
+  if (!ctx) return;
 
-  new Chart(ctx, {
+  // destroy old chart
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(ctx, {
     type: "pie",
     data: {
       labels: Object.keys(classCount),
@@ -123,12 +161,14 @@ function showChart(classCount) {
   });
 }
 
+// ===============================
 // LOGIN
+// ===============================
 function login() {
-  if (
-    document.getElementById("username").value === "admin" &&
-    document.getElementById("password").value === "1234"
-  ) {
+  const username = document.getElementById("username")?.value;
+  const password = document.getElementById("password")?.value;
+
+  if (username === "admin" && password === "1234") {
     localStorage.setItem("loggedIn", "true");
     window.location.href = "dashboard.html";
   } else {
@@ -136,53 +176,10 @@ function login() {
   }
 }
 
+// ===============================
 // LOGOUT
+// ===============================
 function logout() {
   localStorage.removeItem("loggedIn");
   window.location.href = "login.html";
-}
-
-// ===============================
-// COUNTER ANIMATION
-// ===============================
-function startCounter() {
-  const counters = document.querySelectorAll('.counter');
-  let started = false;
-
-  function runCounter() {
-    if (started) return;
-
-    counters.forEach(counter => {
-      counter.innerText = '0';
-      const target = +counter.getAttribute('data-target');
-
-      const update = () => {
-        const count = +counter.innerText;
-        const increment = target / 100;
-
-        if (count < target) {
-          counter.innerText = Math.ceil(count + increment);
-          setTimeout(update, 20);
-        } else {
-          counter.innerText = target;
-        }
-      };
-
-      update();
-    });
-
-    started = true;
-  }
-
-  window.addEventListener("scroll", () => {
-    const section = document.querySelector(".counter");
-    if (!section) return;
-
-    const sectionTop = section.getBoundingClientRect().top;
-    const screenHeight = window.innerHeight;
-
-    if (sectionTop < screenHeight - 100) {
-      runCounter();
-    }
-  });
 }
