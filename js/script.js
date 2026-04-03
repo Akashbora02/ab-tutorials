@@ -190,34 +190,41 @@ function logout() {
 
 function startCounter() {
   const counters = document.querySelectorAll('.counter');
-  let started = false;
 
-  function runCounter() {
-    if (started) return;
+  if (!counters.length) return;
 
-    counters.forEach(counter => {
-      counter.innerText = '0';
-      const target = +counter.getAttribute('data-target');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
 
-      const update = () => {
-        const count = +counter.innerText;
-        const increment = target / 100;
+        counters.forEach(counter => {
+          counter.innerText = '0';
+          const target = +counter.getAttribute('data-target');
 
-        if (count < target) {
-          counter.innerText = Math.ceil(count + increment);
-          setTimeout(update, 20);
-        } else {
-          counter.innerText = target;
-        }
-      };
+          const update = () => {
+            const count = +counter.innerText;
+            const increment = target / 100;
 
-      update();
+            if (count < target) {
+              counter.innerText = Math.ceil(count + increment);
+              setTimeout(update, 20);
+            } else {
+              counter.innerText = target;
+            }
+          };
+
+          update();
+        });
+
+        observer.disconnect(); // run once only
+      }
     });
+  }, { threshold: 0.5 });
 
-    started = true;
-  }
+  observer.observe(counters[0]);
+}
 
-  // Run on scroll
+/*  // Run on scroll
   window.addEventListener("scroll", () => {
     const section = document.querySelector(".counter");
     if (!section) return;
@@ -228,5 +235,4 @@ function startCounter() {
     if (sectionTop < screenHeight - 100) {
       runCounter();
     }
-  });
-}
+  });*/
