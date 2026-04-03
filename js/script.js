@@ -236,6 +236,7 @@ function loadResults() {
   results.forEach(r => {
     html += `
       <tr>
+        <td>${r.name}</td> <!-- ✅ NAME -->
         <td>Class ${r.class}</td>
         <td>${r.score}/${r.total}</td>
         <td>${r.date}</td>
@@ -243,7 +244,7 @@ function loadResults() {
     `;
   });
 
-  table.innerHTML = html || "<tr><td colspan='3'>No test data</td></tr>";
+  table.innerHTML = html || "<tr><td colspan='4'>No data</td></tr>";
 }
 /*  // Run on scroll
   window.addEventListener("scroll", () => {
