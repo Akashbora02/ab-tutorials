@@ -183,3 +183,48 @@ function logout() {
   localStorage.removeItem("loggedIn");
   window.location.href = "login.html";
 }
+
+
+
+function startCounter() {
+  const counters = document.querySelectorAll('.counter');
+  let started = false;
+
+  function runCounter() {
+    if (started) return;
+
+    counters.forEach(counter => {
+      counter.innerText = '0';
+      const target = +counter.getAttribute('data-target');
+
+      const update = () => {
+        const count = +counter.innerText;
+        const increment = target / 100;
+
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(update, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+
+      update();
+    });
+
+    started = true;
+  }
+
+  // Run on scroll
+  window.addEventListener("scroll", () => {
+    const section = document.querySelector(".counter");
+    if (!section) return;
+
+    const sectionTop = section.getBoundingClientRect().top;
+    const screenHeight = window.innerHeight;
+
+    if (sectionTop < screenHeight - 100) {
+      runCounter();
+    }
+  });
+}
