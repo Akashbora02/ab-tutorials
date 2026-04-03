@@ -73,12 +73,20 @@ function loadSheetData() {
 
       // ✅ Latest class (last row)
       if (rows.length > 0) {
-        const last = rows[rows.length - 1].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-        if (last) {
-          document.getElementById("latestClass").innerText = clean(last[8]);
+        const validRows = rows.filter(r => r.trim());
+
+        const lastRow = validRows[validRows.length - 1];
+
+        const cols = lastRow.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+        if (cols && cols.length >= 9) {
+          const latestClass = clean(cols[8]); // ✅ CORRECT
+          document.getElementById("latestClass").innerText = latestClass;
         }
       }
-
+      function formatClass(cls) {
+        return cls.replace("Class ", "").replace(" (Grade ", "").replace(")", "") + "th";
+      }
       // ✅ Show chart
       showChart(classCount);
 
