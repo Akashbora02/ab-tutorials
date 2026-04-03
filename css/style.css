@@ -1,6 +1,15 @@
-/* ===============================
-   GLOBAL LAYOUT
-=============================== */
+.hero img {
+  height: 60vh;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* FOOTER FIX */
 html, body {
   height: 100%;
 }
@@ -8,49 +17,21 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  font-family: system-ui, sans-serif;
-}
-
-/* ===============================
-   HERO SECTION
-=============================== */
-.hero img {
-  height: 60vh;
-  object-fit: cover;
-}
-
-/* ===============================
-   CAROUSEL
-=============================== */
-.carousel-caption {
-  background: rgba(0,0,0,0.5);
-  padding: 12px;
-  border-radius: 10px;
-}
-
-/* ===============================
-   CARDS
-=============================== */
-.card {
-  transition: 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px);
+  transition: 0.3s;
 }
 
-/* ===============================
-   IMAGES
-=============================== */
-.img-fluid {
-  height: 250px;
-  object-fit: cover;
-  border-radius: 10px;
+footer a {
+  text-decoration: none;
 }
 
-/* ===============================
-   COUNTER
-=============================== */
+footer a:hover {
+  text-decoration: underline;
+}
+
 .counter {
   font-size: 42px;
   font-weight: bold;
@@ -62,31 +43,23 @@ body {
   transform: scale(1.1);
 }
 
-/* ===============================
-   FOOTER
-=============================== */
 #footer {
   margin-top: auto;
+  margin-bottom: auto;
 }
 
-footer a {
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
-.footerpara {
-  text-align: center;
-  padding: 12px 0;
-}
-
-/* ===============================
-   MAP
-=============================== */
 iframe {
   border-radius: 10px;
+}
+
+.footerpara{
+  margin: auto;
+  padding: 12px 0px;
+}
+
+.img-fluid{
+  height: 250px;
+  object-fit: cover;
 }
 
 /* ===============================
