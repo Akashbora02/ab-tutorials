@@ -1,129 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Dashboard - AB Tutorial</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - AB Tutorial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<!-- 🔐 PROTECT PAGE -->
-<script>
-if (localStorage.getItem("loggedIn") !== "true") {
-  window.location.href = "login.html";
-}
-</script>
+  <!-- 🔐 PROTECT PAGE -->
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
 
-<!-- NAVBAR -->
-<div id="navbar"></div>
+  <!-- NAVBAR -->
+  <div id="navbar"></div>
 
-<!-- HEADER -->
-<section class="py-4 bg-light text-center">
-  <div class="container">
-    <h1>Dashboard</h1>
-    <p class="lead mb-0">Student Admission Data</p>
-  </div>
-</section>
-
-<!-- MAIN CONTENT -->
-<div class="container py-5">
-
-  <!-- STATS -->
-  <div class="row g-4 text-center">
-
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h6>Total Students</h6>
-        <h3 id="totalStudents" class="text-primary">0</h3>
-      </div>
+  <!-- HEADER -->
+  <section class="py-4 bg-light text-center">
+    <div class="container">
+      <h1>Dashboard</h1>
+      <p class="lead mb-0">Student Admission Data</p>
     </div>
+  </section>
 
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h6>Latest Class</h6>
-        <h3 id="latestClass" class="text-success">-</h3>
+  <!-- MAIN CONTENT -->
+  <div class="container py-5">
+
+    <!-- STATS -->
+    <div class="row g-4 text-center">
+
+      <div class="col-12 col-md-4">
+        <div class="card shadow p-4">
+          <h6>Total Students</h6>
+          <h3 id="totalStudents" class="text-primary">0</h3>
+        </div>
       </div>
-    </div>
 
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h6>Status</h6>
-        <h3 class="text-warning">Active</h3>
+      <div class="col-12 col-md-4">
+        <div class="card shadow p-4">
+          <h6>Latest Class</h6>
+          <h3 id="latestClass" class="text-success">-</h3>
+        </div>
       </div>
-    </div>
 
-  </div>
-
-  <!-- TABLE SECTION -->
-  <div class="mt-5">
-
-    <!-- HEADING + FILTER -->
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-      <h3 class="mb-0">Recent Admissions</h3>
-
-      <div style="min-width: 220px;">
-        <label class="small text-muted">Filter by Class</label>
-        <select id="classFilter" class="form-select">
-          <option value="">All Classes</option>
-          <option>Class 5 (Grade 5)</option>
-          <option>Class 6 (Grade 6)</option>
-          <option>Class 7 (Grade 7)</option>
-          <option>Class 8 (Grade 8)</option>
-          <option>Class 9 (Grade 9)</option>
-          <option>Class 10 (Grade 10)</option>
-        </select>
+      <div class="col-12 col-md-4">
+        <div class="card shadow p-4">
+          <h6>Status</h6>
+          <h3 class="text-warning">Active</h3>
+        </div>
       </div>
 
     </div>
 
-    <!-- TABLE -->
-    <div class="table-responsive mt-3">
+    <!-- TABLE SECTION -->
+    <div class="mt-5">
+
+      <!-- HEADING + FILTER -->
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <h3 class="mb-0">Recent Admissions</h3>
+
+        <div style="min-width: 220px;">
+          <label class="small text-muted">Filter by Class</label>
+          <select id="classFilter" class="form-select">
+            <option value="">All Classes</option>
+            <option>Class 5 (Grade 5)</option>
+            <option>Class 6 (Grade 6)</option>
+            <option>Class 7 (Grade 7)</option>
+            <option>Class 8 (Grade 8)</option>
+            <option>Class 9 (Grade 9)</option>
+            <option>Class 10 (Grade 10)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-responsive mt-3">
+        <table class="table table-striped shadow">
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Class</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="studentTable">
+            <tr>
+              <td colspan="4" class="text-center">Loading...</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+
+    <h4 class="mt-5">Test Results</h4>
+
+    <div class="table-responsive">
       <table class="table table-striped shadow">
         <thead class="table-dark">
           <tr>
-            <th>Name</th>
-            <th>Phone</th>
             <th>Class</th>
-            <th>Status</th>
+            <th>Score</th>
+            <th>Date</th>
           </tr>
         </thead>
-
-        <tbody id="studentTable">
-          <tr>
-            <td colspan="4" class="text-center">Loading...</td>
-          </tr>
-        </tbody>
-
+        <tbody id="resultTable"></tbody>
       </table>
+    </div>
+
+    <!-- CHART -->
+    <div class="mt-5">
+      <h4 class="mb-3">Class Distribution</h4>
+      <canvas id="chart"></canvas>
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="text-center mt-5">
+      <button onclick="logout()" class="btn btn-danger px-4">Logout</button>
     </div>
 
   </div>
 
-  <!-- CHART -->
-  <div class="mt-5">
-    <h4 class="mb-3">Class Distribution</h4>
-    <canvas id="chart"></canvas>
-  </div>
+  <!-- FOOTER -->
+  <div id="footer"></div>
 
-  <!-- LOGOUT -->
-  <div class="text-center mt-5">
-    <button onclick="logout()" class="btn btn-danger px-4">Logout</button>
-  </div>
-
-</div>
-
-<!-- FOOTER -->
-<div id="footer"></div>
-
-<!-- SCRIPTS -->
-<script src="js/script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SCRIPTS -->
+  <script src="js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Select Mock Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- 🔐 PROTECT PAGE -->
+<script>
+if (localStorage.getItem("loggedIn") !== "true") {
+  window.location.href = "login.html";
+}
+</script>
+
+<div class="container text-center py-5">
+
+  <h2>Select Your Class</h2>
+
+  <div class="row mt-4">
+
+    <div class="col-md-4">
+      <button class="btn btn-primary w-100 p-3" onclick="startTest('8')">
+        Class 8 Mock Test
+      </button>
+    </div>
+
+    <div class="col-md-4">
+      <button class="btn btn-success w-100 p-3" onclick="startTest('9')">
+        Class 9 Mock Test
+      </button>
+    </div>
+
+    <div class="col-md-4">
+      <button class="btn btn-warning w-100 p-3" onclick="startTest('10')">
+        Class 10 Mock Test
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/mocktest.js"></script>
+
+</body>
+</html>

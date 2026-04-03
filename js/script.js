@@ -22,6 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setupSearch();
 
   startCounter();
+  loadResults();
 });
 
 // ===============================
@@ -224,6 +225,26 @@ function startCounter() {
   observer.observe(counters[0]);
 }
 
+function loadResults() {
+  const table = document.getElementById("resultTable");
+  if (!table) return;
+
+  const results = JSON.parse(localStorage.getItem("results")) || [];
+
+  let html = "";
+
+  results.forEach(r => {
+    html += `
+      <tr>
+        <td>Class ${r.class}</td>
+        <td>${r.score}/${r.total}</td>
+        <td>${r.date}</td>
+      </tr>
+    `;
+  });
+
+  table.innerHTML = html || "<tr><td colspan='3'>No test data</td></tr>";
+}
 /*  // Run on scroll
   window.addEventListener("scroll", () => {
     const section = document.querySelector(".counter");
