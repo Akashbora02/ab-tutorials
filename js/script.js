@@ -1,16 +1,27 @@
-// LOAD COMPONENTS
+// ✅ LOAD NAVBAR + FOOTER
 function loadComponent(id, file) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
   fetch(file)
     .then(res => res.text())
-    .then(data => document.getElementById(id).innerHTML = data);
+    .then(data => {
+      el.innerHTML = data;
+    });
 }
 
+// RUN AFTER PAGE LOAD
 window.addEventListener("DOMContentLoaded", () => {
   loadComponent("navbar", "components/navbar.html");
   loadComponent("footer", "components/footer.html");
 
-  const counters = document.querySelectorAll('.counter');
+  startCounter();
+  loadSheetData();
+});
 
+// ✅ COUNTER ANIMATION
+function startCounter() {
+  const counters = document.querySelectorAll('.counter');
   let started = false;
 
   function runCounter() {
@@ -18,7 +29,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     counters.forEach(counter => {
       counter.innerText = '0';
-
       const target = +counter.getAttribute('data-target');
 
       const update = () => {
@@ -39,10 +49,8 @@ window.addEventListener("DOMContentLoaded", () => {
     started = true;
   }
 
-  // 👇 SCROLL DETECTION
   window.addEventListener("scroll", () => {
     const section = document.querySelector(".counter");
-
     if (!section) return;
 
     const sectionTop = section.getBoundingClientRect().top;
@@ -52,9 +60,57 @@ window.addEventListener("DOMContentLoaded", () => {
       runCounter();
     }
   });
-});
+}
 
-// LOGIN FUNCTION
+// ✅ LOAD GOOGLE SHEET DATA
+function loadSheetData() {
+  const table = document.getElementById("studentTable");
+  if (!table) return;
+
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
+
+  fetch(sheetURL)
+    .then(res => res.text())
+    .then(data => {
+
+      const rows = data.split("\n").slice(1);
+
+      let html = "";
+      let count = 0;
+
+      rows.forEach(row => {
+        const cols = row.split(",");
+
+        if (cols.length > 3) {
+          count++;
+
+          html += `
+            <tr>
+              <td>${cols[1]}</td>
+              <td>${cols[2]}</td>
+              <td>${cols[3]}</td>
+              <td><span class="badge bg-success">New</span></td>
+            </tr>
+          `;
+        }
+      });
+
+      table.innerHTML = html;
+      document.getElementById("totalStudents").innerText = count;
+
+      if (rows.length > 0) {
+        const last = rows[rows.length - 1].split(",");
+        document.getElementById("latestClass").innerText = last[3];
+      }
+
+    })
+    .catch(() => {
+      table.innerHTML =
+        "<tr><td colspan='4' class='text-danger text-center'>Error loading data</td></tr>";
+    });
+}
+
+// ✅ LOGIN
 function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -67,7 +123,7 @@ function login() {
   }
 }
 
-// LOGOUT FUNCTION
+// ✅ LOGOUT
 function logout() {
   localStorage.removeItem("loggedIn");
   window.location.href = "login.html";

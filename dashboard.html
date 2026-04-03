@@ -13,88 +13,81 @@
 
 <!-- 🔐 PROTECT PAGE -->
 <script>
-  if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "login.html";
-  }
+if (localStorage.getItem("loggedIn") !== "true") {
+  window.location.href = "login.html";
+}
 </script>
 
-<!-- NAVBAR -->
 <div id="navbar"></div>
 
 <!-- HEADER -->
 <section class="py-5 text-center bg-light">
   <div class="container">
     <h1>Dashboard</h1>
-    <p class="lead">Welcome to AB Tutorial Admin Panel</p>
+    <p class="lead">Student Admission Data</p>
   </div>
 </section>
 
-<!-- MAIN CONTENT -->
 <div class="container py-5">
 
-  <div class="row g-4">
+  <!-- STATS -->
+  <div class="row g-4 text-center">
 
-    <!-- CARD 1 -->
-    <div class="col-md-4">
-      <div class="card shadow text-center p-4">
+    <div class="col-12 col-md-4">
+      <div class="card shadow p-4">
         <h5>Total Students</h5>
-        <h2 class="text-primary">50+</h2>
+        <h2 id="totalStudents" class="text-primary">0</h2>
       </div>
     </div>
 
-    <!-- CARD 2 -->
-    <div class="col-md-4">
-      <div class="card shadow text-center p-4">
-        <h5>Success Rate</h5>
-        <h2 class="text-success">100%</h2>
+    <div class="col-12 col-md-4">
+      <div class="card shadow p-4">
+        <h5>Latest Class</h5>
+        <h2 id="latestClass" class="text-success">-</h2>
       </div>
     </div>
 
-    <!-- CARD 3 -->
-    <div class="col-md-4">
-      <div class="card shadow text-center p-4">
-        <h5>Active Batches</h5>
-        <h2 class="text-warning">3</h2>
+    <div class="col-12 col-md-4">
+      <div class="card shadow p-4">
+        <h5>Status</h5>
+        <h2 class="text-warning">Active</h2>
       </div>
     </div>
 
   </div>
 
-  <!-- TABLE (PRO LOOK) -->
+  <!-- TABLE -->
   <div class="mt-5">
     <h3>Recent Admissions</h3>
 
-    <table class="table table-striped shadow mt-3">
-      <thead class="table-dark">
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Samruddhi</td>
-          <td>8th</td>
-          <td>Active</td>
-        </tr>
-        <tr>
-          <td>Yash</td>
-          <td>8th</td>
-          <td>Active</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped shadow mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Class</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="studentTable">
+          <tr>
+            <td colspan="4" class="text-center">Loading...</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
   </div>
 
-  <!-- LOGOUT BUTTON -->
+  <!-- LOGOUT -->
   <div class="text-center mt-4">
     <button onclick="logout()" class="btn btn-danger px-4">Logout</button>
   </div>
 
 </div>
 
-<!-- FOOTER -->
 <div id="footer"></div>
 
 <script src="js/script.js"></script>
