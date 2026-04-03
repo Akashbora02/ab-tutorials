@@ -1,15 +1,6 @@
-.hero img {
-  height: 60vh;
-  object-fit: cover;
-}
-
-.carousel-caption {
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 10px;
-}
-
-/* FOOTER FIX */
+/* ===============================
+   GLOBAL LAYOUT
+=============================== */
 html, body {
   height: 100%;
 }
@@ -17,33 +8,49 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+  font-family: system-ui, sans-serif;
+}
+
+/* ===============================
+   HERO SECTION
+=============================== */
+.hero img {
+  height: 60vh;
+  object-fit: cover;
+}
+
+/* ===============================
+   CAROUSEL
+=============================== */
+.carousel-caption {
+  background: rgba(0,0,0,0.5);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* ===============================
+   CARDS
+=============================== */
+.card {
+  transition: 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  transition: 0.3s;
+  transform: translateY(-6px);
 }
 
-.whatsapp {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25d366;
-  color: white;
-  font-size: 20px;
-  padding: 12px;
-  border-radius: 50%;
-  z-index: 999;
+/* ===============================
+   IMAGES
+=============================== */
+.img-fluid {
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
-footer a {
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
-
+/* ===============================
+   COUNTER
+=============================== */
 .counter {
   font-size: 42px;
   font-weight: bold;
@@ -55,31 +62,80 @@ footer a:hover {
   transform: scale(1.1);
 }
 
+/* ===============================
+   FOOTER
+=============================== */
 #footer {
   margin-top: auto;
-  margin-bottom: auto;
 }
 
+footer a {
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.footerpara {
+  text-align: center;
+  padding: 12px 0;
+}
+
+/* ===============================
+   MAP
+=============================== */
 iframe {
   border-radius: 10px;
 }
 
-.footerpara{
-  margin: auto;
-  padding: 12px 0px;
+/* ===============================
+   ✅ WHATSAPP CONTACT BUTTON (NEW STYLE)
+=============================== */
+.whatsapp-contact {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: linear-gradient(135deg, #25d366, #1ebe5d);
+  color: white;
+
+  padding: 12px 18px;
+  border-radius: 50px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+  z-index: 999;
+  transition: all 0.3s ease;
 }
 
-.img-fluid{
-  height: 250px;
-  object-fit: cover;
+/* ICON */
+.whatsapp-contact img {
+  width: 24px;
+  height: 24px;
 }
 
-.whatsapp-btn::before {
+/* HOVER */
+.whatsapp-contact:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+/* PULSE EFFECT */
+.whatsapp-contact::before {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+  inset: 0;
+  border-radius: 50px;
   background: #25d366;
   animation: pulse 1.5s infinite;
   z-index: -1;
@@ -87,6 +143,31 @@ iframe {
 
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.6; }
-  70% { transform: scale(1.5); opacity: 0; }
+  70% { transform: scale(1.4); opacity: 0; }
   100% { transform: scale(1); opacity: 0; }
+}
+
+/* ===============================
+   📱 RESPONSIVE
+=============================== */
+@media (max-width: 768px) {
+
+  .hero img {
+    height: 40vh;
+  }
+
+  .img-fluid {
+    height: 200px;
+  }
+
+  .whatsapp-contact {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .whatsapp-contact img {
+    width: 20px;
+    height: 20px;
+  }
+
 }
