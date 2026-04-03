@@ -1,4 +1,6 @@
-// LOAD COMPONENTS
+// ===============================
+// LOAD NAVBAR + FOOTER
+// ===============================
 function loadComponent(id, file) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -8,15 +10,20 @@ function loadComponent(id, file) {
     .then(data => el.innerHTML = data);
 }
 
+// ===============================
 // PAGE LOAD
+// ===============================
 window.addEventListener("DOMContentLoaded", () => {
   loadComponent("navbar", "components/navbar.html");
   loadComponent("footer", "components/footer.html");
 
   loadSheetData();
+  setupFilters();
 });
 
+// ===============================
 // GOOGLE SHEET DATA
+// ===============================
 function loadSheetData() {
   const table = document.getElementById("studentTable");
   if (!table) return;
@@ -32,18 +39,23 @@ function loadSheetData() {
       let html = "";
       let count = 0;
 
+      const classCount = {}; // for chart
+
       rows.forEach(row => {
         if (!row.trim()) return;
 
-        // FIXED CSV PARSER
         const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
         if (cols && cols.length >= 5) {
           count++;
 
+          // ✅ CORRECT INDEXES
           const name = clean(cols[1]);
           const phone = clean(cols[5]);
           const studentClass = clean(cols[8]);
+
+          // count classes
+          classCount[studentClass] = (classCount[studentClass] || 0) + 1;
 
           html += `
             <tr>
@@ -59,12 +71,16 @@ function loadSheetData() {
       table.innerHTML = html || "<tr><td colspan='4'>No Data</td></tr>";
       document.getElementById("totalStudents").innerText = count;
 
+      // ✅ Latest class (last row)
       if (rows.length > 0) {
         const last = rows[rows.length - 1].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
         if (last) {
-          document.getElementById("latestClass").innerText = clean(last[4]); // ✅ FIXED
+          document.getElementById("latestClass").innerText = clean(last[8]);
         }
       }
+
+      // ✅ Show chart
+      showChart(classCount);
 
     })
     .catch(err => {
@@ -74,12 +90,56 @@ function loadSheetData() {
     });
 }
 
+// ===============================
 // CLEAN FUNCTION
+// ===============================
 function clean(value) {
   return value.replace(/"/g, "").trim();
 }
 
+// ===============================
+// FILTER SYSTEM
+// ===============================
+function setupFilters() {
+  const filter = document.getElementById("classFilter");
+  if (!filter) return;
+
+  filter.addEventListener("change", () => {
+    filterByClass(filter.value);
+  });
+}
+
+function filterByClass(selected) {
+  const rows = document.querySelectorAll("#studentTable tr");
+
+  rows.forEach(row => {
+    const cls = row.children[2]?.innerText;
+    row.style.display = (!selected || cls === selected) ? "" : "none";
+  });
+}
+
+// ===============================
+// CHART (CLASS COUNT)
+// ===============================
+function showChart(classCount) {
+  const canvas = document.getElementById("chart");
+  if (!canvas) return;
+
+  new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: Object.keys(classCount),
+      datasets: [{
+        label: "Students per Class",
+        data: Object.values(classCount)
+      }]
+    }
+  });
+}
+
+// ===============================
 // LOGIN
+// ===============================
 function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -92,13 +152,17 @@ function login() {
   }
 }
 
+// ===============================
 // LOGOUT
+// ===============================
 function logout() {
   localStorage.removeItem("loggedIn");
   window.location.href = "login.html";
 }
 
-// ✅ COUNTER ANIMATION
+// ===============================
+// COUNTER ANIMATION
+// ===============================
 function startCounter() {
   const counters = document.querySelectorAll('.counter');
   let started = false;
