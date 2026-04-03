@@ -7,111 +7,143 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #212529;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.sidebar h4 {
+  color: #0d6efd;
+}
+
+.sidebar a {
+  color: white;
+  display: block;
+  margin: 10px 0;
+  text-decoration: none;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Mobile */
+@media(max-width:768px){
+  .sidebar {
+    display: none;
+  }
+}
+</style>
+
 </head>
 
 <body>
 
-<!-- 🔐 PROTECT PAGE -->
-<script>
-if (localStorage.getItem("loggedIn") !== "true") {
-  window.location.href = "login.html";
-}
-</script>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h4>AB Tutorial</h4>
+  <a href="#">Dashboard</a>
+  <a href="#">Students</a>
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
 
 <div id="navbar"></div>
 
-<section class="py-5 text-center bg-light">
-  <div class="container">
-    <h1>Dashboard</h1>
-    <p class="lead">Student Admission Data</p>
-  </div>
+<!-- HEADER -->
+<section class="py-3">
+  <h2>Dashboard</h2>
+  <p class="text-muted">Student Admission Analytics</p>
 </section>
 
-<div class="container py-5">
+<!-- STATS -->
+<div class="row g-3 text-center">
 
-  <!-- STATS -->
-  <div class="row g-4 text-center">
-
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h5>Total Students</h5>
-        <h2 id="totalStudents" class="text-primary">0</h2>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h5>Latest Class</h5>
-        <h2 id="latestClass" class="text-success">-</h2>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <div class="card shadow p-4">
-        <h5>Status</h5>
-        <h2 class="text-warning">Active</h2>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- TABLE -->
-   
-
-  <div class="mt-5">
-    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
-
-  <!-- LEFT: Heading -->
-  <h3 class="mb-2">Recent Admissions</h3>
-
-  <!-- RIGHT: Filter -->
-<div style="min-width: 220px;">
-  <label class="small text-muted">Filter by Class</label>
-  <select id="classFilter" class="form-select">
-      <option>Class 5 (Grade 5)</option>
-      <option>Class 6 (Grade 6)</option>
-      <option>Class 7 (Grade 7)</option>
-      <option>Class 8 (Grade 8)</option>
-      <option>Class 9 (Grade 9)</option>
-      <option>Class 10 (Grade 10)</option>
-    </select>
-  </div>
-
-</div>
-    <div class="table-responsive">
-      <table class="table table-striped shadow mt-3">
-        <thead class="table-dark">
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Class</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="studentTable">
-          <tr>
-            <td colspan="4" class="text-center">Loading...</td>
-          </tr>
-        </tbody>
-
-      </table>
+  <div class="col-12 col-md-4">
+    <div class="card shadow p-3">
+      <h6>Total Students</h6>
+      <h3 id="totalStudents" class="text-primary">0</h3>
     </div>
   </div>
 
-  <div class="text-center mt-4">
-    <button onclick="logout()" class="btn btn-danger px-4">Logout</button>
+  <div class="col-12 col-md-4">
+    <div class="card shadow p-3">
+      <h6>Latest Class</h6>
+      <h3 id="latestClass" class="text-success">-</h3>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="card shadow p-3">
+      <h6>Status</h6>
+      <h3 class="text-warning">Active</h3>
+    </div>
   </div>
 
 </div>
 
-<div id="footer"></div>
+<!-- SEARCH + FILTER -->
+<div class="d-flex justify-content-between mt-4 flex-wrap gap-2">
+
+  <input id="searchInput" class="form-control w-auto" placeholder="Search student...">
+
+  <select id="classFilter" class="form-select w-auto">
+    <option value="">All Classes</option>
+    <option>Class 5 (Grade 5)</option>
+    <option>Class 6 (Grade 6)</option>
+    <option>Class 7 (Grade 7)</option>
+    <option>Class 8 (Grade 8)</option>
+    <option>Class 9 (Grade 9)</option>
+    <option>Class 10 (Grade 10)</option>
+  </select>
+
+</div>
+
+<!-- TABLE -->
+<div class="table-responsive mt-3">
+  <table class="table table-striped shadow">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Class</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody id="studentTable">
+      <tr>
+        <td colspan="4" class="text-center">Loading...</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+
+<!-- CHART -->
+<div class="mt-5">
+  <canvas id="chart"></canvas>
+</div>
+
+</div>
 
 <script src="js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<canvas id="chart" class="mt-5"></canvas>
-
 
 </body>
 </html>
