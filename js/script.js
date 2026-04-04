@@ -233,18 +233,33 @@ function loadResults() {
 
   let html = "";
 
-  results.forEach(r => {
+  results.forEach((r, index) => {
     html += `
       <tr>
-        <td>${r.name}</td> <!-- ✅ NAME -->
+        <td>${r.name}</td>
         <td>Class ${r.class}</td>
         <td>${r.score}/${r.total}</td>
         <td>${r.date}</td>
+        <td>
+          <button onclick="deleteResult(${index})" class="btn btn-sm btn-danger">
+            Delete
+          </button>
+        </td>
       </tr>
     `;
   });
 
-  table.innerHTML = html || "<tr><td colspan='4'>No data</td></tr>";
+  table.innerHTML = html;
+}
+
+function deleteResult(index) {
+  let results = JSON.parse(localStorage.getItem("results")) || [];
+
+  results.splice(index, 1);
+
+  localStorage.setItem("results", JSON.stringify(results));
+
+  loadResults(); // refresh table
 }
 /*  // Run on scroll
   window.addEventListener("scroll", () => {
