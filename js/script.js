@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Wait for navbar & footer
   await loadComponent("navbar", "components/navbar.html");
   await loadComponent("footer", "components/footer.html");
-  
+
   loadTheme();   // 👈 important
   // Now safe to run everything
   startCounter();
@@ -277,6 +277,10 @@ function showChart(classCount) {
       datasets: [{
         data: Object.values(classCount)
       }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // 👈 IMPORTANT
     }
   });
 }
