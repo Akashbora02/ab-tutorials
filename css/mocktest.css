@@ -1,14 +1,15 @@
 body {
-  font-family: Arial;
-  background: #f0f2f5;
+  font-family: 'Poppins', sans-serif;
+  background: #f1f5f9;
 }
 
 .container {
   max-width: 700px;
   margin: auto;
   background: white;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 #question {
@@ -19,19 +20,19 @@ body {
 #options button {
   width: 100%;
   margin: 6px 0;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid #ddd;
   transition: 0.3s;
 }
 
 #options button:hover {
-  background: #0d6efd;
+  background: #1e3a8a;
   color: white;
 }
 
 .selected {
-  background: #0d6efd !important;
+  background: #1e3a8a !important;
   color: white;
 }
 
@@ -45,21 +46,6 @@ button {
   border: none;
 }
 
-.nav-btn {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.submit-btn {
-  width: 100%;
-  background: green;
-  color: white;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 8px;
-}
-
 .back-btn {
   margin-top: 15px;
   background: #6c757d;
@@ -67,11 +53,4 @@ button {
   padding: 10px;
   border-radius: 8px;
   width: 100%;
-}
-
-/* Responsive */
-@media(max-width:600px) {
-  .container {
-    padding: 15px;
-  }
 }

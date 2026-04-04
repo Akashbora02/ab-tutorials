@@ -1,11 +1,13 @@
 /* ===============================
-   🎨 BRAND COLORS
+   🎨 BRAND COLORS (PREMIUM)
 =============================== */
 :root {
-  --primary: #0d6efd;
-  --secondary: #198754;
-  --text-dark: #222;
-  --text-light: #555;
+  --primary: #1e3a8a;
+  --secondary: #22c55e;
+  --dark: #111827;
+  --light-bg: #f9fafb;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
 }
 
 /* ===============================
@@ -13,8 +15,9 @@
 =============================== */
 body {
   font-family: 'Poppins', sans-serif;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--text-dark);
+  background: #ffffff;
 
   display: flex;
   flex-direction: column;
@@ -22,17 +25,14 @@ body {
 }
 
 /* Headings */
-h1,
-h2,
-h3,
-h4,
-h5 {
+h1, h2, h3, h4, h5 {
   font-weight: 600;
   color: var(--primary);
 }
 
 h1 {
   font-size: 42px;
+  line-height: 1.2;
 }
 
 h2 {
@@ -42,14 +42,15 @@ h2 {
 
 /* Paragraph */
 p {
-  font-weight: 400;
   color: var(--text-light);
+  font-size: 15px;
 }
 
 /* Links */
 a {
   color: var(--primary);
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 a:hover {
@@ -58,29 +59,45 @@ a:hover {
 
 /* Sections */
 section {
-  padding: 60px 0;
+  padding: 70px 0;
+}
+
+/* Alternate background */
+.bg-light {
+  background-color: var(--light-bg) !important;
 }
 
 /* ===============================
-   🔘 BUTTONS
+   🔘 BUTTONS (UPGRADED)
 =============================== */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
 .btn-primary {
-  background-color: var(--primary);
+  background: var(--primary);
   border: none;
 }
 
 .btn-success {
-  background-color: var(--secondary);
+  background: var(--secondary);
   border: none;
 }
 
-/* Hover Effects */
+.btn-outline-light {
+  border-radius: 8px;
+}
+
 .btn-primary:hover {
-  background-color: #0b5ed7;
+  background: #172554;
+  transform: translateY(-2px);
 }
 
 .btn-success:hover {
-  background-color: #157347;
+  background: #16a34a;
+  transform: translateY(-2px);
 }
 
 /* ===============================
@@ -92,19 +109,26 @@ section {
 }
 
 .carousel-caption {
-  max-width: 500px;
+  max-width: 520px;
   text-align: left;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 25px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
 }
 
 /* ===============================
-   📦 CARDS
+   📦 CARDS (PREMIUM)
 =============================== */
 .card {
-  transition: 0.3s;
+  border: none;
+  border-radius: 14px;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
 
 /* ===============================
@@ -127,11 +151,41 @@ section {
 .gallery img {
   height: 250px;
   object-fit: cover;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
 }
 
 /* ===============================
-   📍 FOOTER
+   📍 FOOTER (PREMIUM)
 =============================== */
+footer {
+  background: var(--dark);
+  color: #e5e7eb;
+}
+
+footer h5 {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+footer p {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+footer a {
+  color: #e5e7eb;
+  transition: 0.3s;
+}
+
+footer a:hover {
+  color: var(--secondary);
+}
+
 #footer {
   margin-top: auto;
 }
@@ -139,14 +193,7 @@ section {
 .footerpara {
   margin: auto;
   padding: 12px 0;
-}
-
-footer a {
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
+  font-size: 14px;
 }
 
 /* ===============================
@@ -161,8 +208,8 @@ iframe {
 =============================== */
 .section {
   opacity: 0;
-  transform: translateY(30px);
-  transition: 0.6s ease;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
 }
 
 .section.show {
@@ -182,66 +229,77 @@ iframe {
   align-items: center;
   gap: 10px;
 
-  background: linear-gradient(135deg, #25d366, #1ebe5d);
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: white;
 
   padding: 12px 18px;
   border-radius: 50px;
 
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
   z-index: 999;
   transition: all 0.3s ease;
 }
 
 .whatsapp-contact img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
 .whatsapp-contact:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
-/* Pulse animation */
+/* Pulse Animation */
 .whatsapp-contact::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 50px;
-  background: #25d366;
+  background: #22c55e;
   animation: pulse 1.5s infinite;
   z-index: -1;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-
-  70% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
 }
 
 /* ===============================
    📱 RESPONSIVE
 =============================== */
+@media (max-width: 992px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .carousel-caption {
+    max-width: 100%;
+    padding: 18px;
+  }
+}
+
 @media (max-width: 768px) {
 
   .hero img {
     height: 40vh;
+  }
+
+  .carousel-caption {
+    padding: 15px;
+  }
+
+  .gallery img {
+    height: 180px;
   }
 
   .img-fluid {
@@ -251,11 +309,104 @@ iframe {
 
   .whatsapp-contact {
     padding: 10px 14px;
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .whatsapp-contact img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
+}
+
+/* ===============================
+   🚀 PREMIUM FOOTER
+=============================== */
+.footer-premium {
+  background: linear-gradient(135deg, #0f172a, #020617);
+}
+
+/* Text */
+.footer-text {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* Links */
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #cbd5f5;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--secondary);
+  padding-left: 5px;
+}
+
+/* Contact link */
+.footer-link {
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: var(--secondary);
+}
+
+/* Social icons */
+.social-icons a {
+  color: white;
+  margin-right: 10px;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: var(--secondary);
+  transform: scale(1.2);
+}
+
+/* Divider */
+.footer-line {
+  border-color: rgba(255,255,255,0.1);
+}
+
+/* Bottom text */
+.footer-bottom {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* ===============================
+   🌙 DARK MODE
+=============================== */
+body.dark-mode {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+  color: #60a5fa;
+}
+
+body.dark-mode p {
+  color: #cbd5f5;
+}
+
+body.dark-mode .card {
+  background: #0f172a;
+  color: white;
+}
+
+body.dark-mode section {
+  background: #020617 !important;
+}
+
+body.dark-mode footer {
+  background: #020617;
 }

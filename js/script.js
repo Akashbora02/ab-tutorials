@@ -3,27 +3,143 @@
 // ===============================
 function loadComponent(id, file) {
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) return Promise.resolve();
 
-  fetch(file)
+  return fetch(file)
     .then(res => res.text())
     .then(data => el.innerHTML = data);
 }
 
 // ===============================
-// PAGE LOAD
+// PAGE LOAD (FIXED)
 // ===============================
-window.addEventListener("DOMContentLoaded", () => {
-  loadComponent("navbar", "components/navbar.html");
-  loadComponent("footer", "components/footer.html");
+window.addEventListener("DOMContentLoaded", async () => {
 
-  loadSheetData();
-  setupFilters();
-  setupSearch();
+  // Wait for navbar & footer
+  await loadComponent("navbar", "components/navbar.html");
+  await loadComponent("footer", "components/footer.html");
 
+  // Now safe to run everything
   startCounter();
   loadResults();
+  setupScrollAnimation();
+  loadTheme();   // 👈 important
 });
+
+// ===============================
+// SCROLL ANIMATION
+// ===============================
+function setupScrollAnimation() {
+  const sections = document.querySelectorAll('.section');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(sec => observer.observe(sec));
+}
+
+// ===============================
+// COUNTER
+// ===============================
+function startCounter() {
+  const counters = document.querySelectorAll('.counter');
+  if (!counters.length) return;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+
+        counters.forEach(counter => {
+          counter.innerText = '0';
+          const target = +counter.getAttribute('data-target');
+
+          const update = () => {
+            const count = +counter.innerText;
+            const increment = target / 100;
+
+            if (count < target) {
+              counter.innerText = Math.ceil(count + increment);
+              setTimeout(update, 20);
+            } else {
+              counter.innerText = target;
+            }
+          };
+
+          update();
+        });
+
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(counters[0]);
+}
+
+// ===============================
+// LOGIN (simple)
+// ===============================
+function login() {
+  const username = document.getElementById("username")?.value;
+  const password = document.getElementById("password")?.value;
+
+  if (username === "admin" && password === "1234") {
+    sessionStorage.setItem("auth", "true");
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Invalid login");
+  }
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+function logout() {
+  sessionStorage.removeItem("auth");
+  window.location.href = "login.html";
+}
+
+// ===============================
+// LOAD RESULTS
+// ===============================
+function loadResults() {
+  const table = document.getElementById("resultTable");
+  if (!table) return;
+
+  const results = JSON.parse(localStorage.getItem("results")) || [];
+
+  let html = "";
+
+  results.forEach((r, index) => {
+    html += `
+      <tr>
+        <td>${r.name}</td>
+        <td>Class ${r.class}</td>
+        <td>${r.score}/${r.total}</td>
+        <td>${r.date}</td>
+        <td>
+          <button onclick="deleteResult(${index})" class="btn btn-sm btn-danger">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  table.innerHTML = html;
+}
+
+function deleteResult(index) {
+  let results = JSON.parse(localStorage.getItem("results")) || [];
+  results.splice(index, 1);
+  localStorage.setItem("results", JSON.stringify(results));
+  loadResults();
+}
 
 // ===============================
 // GOOGLE SHEET DATA
@@ -165,111 +281,30 @@ function showChart(classCount) {
 }
 
 // ===============================
-// LOGIN
+// 🌙 DARK MODE TOGGLE
 // ===============================
-function login() {
-  const username = document.getElementById("username")?.value;
-  const password = document.getElementById("password")?.value;
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
 
-  if (username === "admin" && password === "1234") {
-    localStorage.setItem("loggedIn", "true");
-    window.location.href = "dashboard.html";
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
   } else {
-    alert("Invalid login");
+    localStorage.setItem("theme", "light");
   }
 }
 
-// ===============================
-// LOGOUT
-// ===============================
-function logout() {
-  localStorage.removeItem("loggedIn");
-  window.location.href = "login.html";
+// Load saved theme
+window.addEventListener("DOMContentLoaded", () => {
+  const theme = localStorage.getItem("theme");
+
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+});
+
+function loadTheme() {
+  const theme = localStorage.getItem("theme");
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
 }
-
-
-
-function startCounter() {
-  const counters = document.querySelectorAll('.counter');
-
-  if (!counters.length) return;
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-
-        counters.forEach(counter => {
-          counter.innerText = '0';
-          const target = +counter.getAttribute('data-target');
-
-          const update = () => {
-            const count = +counter.innerText;
-            const increment = target / 100;
-
-            if (count < target) {
-              counter.innerText = Math.ceil(count + increment);
-              setTimeout(update, 20);
-            } else {
-              counter.innerText = target;
-            }
-          };
-
-          update();
-        });
-
-        observer.disconnect(); // run once only
-      }
-    });
-  }, { threshold: 0.5 });
-
-  observer.observe(counters[0]);
-}
-
-function loadResults() {
-  const table = document.getElementById("resultTable");
-  if (!table) return;
-
-  const results = JSON.parse(localStorage.getItem("results")) || [];
-
-  let html = "";
-
-  results.forEach((r, index) => {
-    html += `
-      <tr>
-        <td>${r.name}</td>
-        <td>Class ${r.class}</td>
-        <td>${r.score}/${r.total}</td>
-        <td>${r.date}</td>
-        <td>
-          <button onclick="deleteResult(${index})" class="btn btn-sm btn-danger">
-            Delete
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-
-  table.innerHTML = html;
-}
-
-function deleteResult(index) {
-  let results = JSON.parse(localStorage.getItem("results")) || [];
-
-  results.splice(index, 1);
-
-  localStorage.setItem("results", JSON.stringify(results));
-
-  loadResults(); // refresh table
-}
-/*  // Run on scroll
-  window.addEventListener("scroll", () => {
-    const section = document.querySelector(".counter");
-    if (!section) return;
-
-    const sectionTop = section.getBoundingClientRect().top;
-    const screenHeight = window.innerHeight;
-
-    if (sectionTop < screenHeight - 100) {
-      runCounter();
-    }
-  });*/
