@@ -110,12 +110,19 @@ section {
 
 /* Caption */
 .carousel-caption {
-  max-width: 550px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 30px;
+
+  width: 90%;
+  max-width: 700px;
+
   text-align: left;
+
   background: rgba(0, 0, 0, 0.65);
-  padding: 25px;
+  padding: 20px;
   border-radius: 12px;
-  bottom: 20%;
 }
 
 /* ===============================
@@ -301,28 +308,28 @@ iframe {
   }
 
   /* Caption full width */
-  .carousel-caption {
+ .carousel-caption {
     bottom: 10px;
     left: 10px;
     right: 10px;
+    transform: none;
+
+    width: auto;
     padding: 12px;
-    max-width: 100%;
   }
 
-  /* Text smaller */
   .carousel-caption h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .carousel-caption h2 {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .carousel-caption p {
     font-size: 13px;
   }
 
-  /* Buttons smaller */
   .carousel-caption .btn {
     font-size: 12px;
     padding: 6px 10px;
