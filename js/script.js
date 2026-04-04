@@ -24,6 +24,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   startCounter();
   loadResults();
   setupScrollAnimation();
+  loadSheetData();
 });
 
 // ===============================
