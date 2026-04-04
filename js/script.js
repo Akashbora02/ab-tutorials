@@ -90,10 +90,15 @@ function login() {
   const password = document.getElementById("password")?.value;
 
   if (username === "admin" && password === "1234") {
-    sessionStorage.setItem("auth", "true");
+
+    // ✅ Save login
+    localStorage.setItem("loggedIn", "true");
+
+    // ✅ Redirect
     window.location.href = "dashboard.html";
+
   } else {
-    alert("Invalid login");
+    alert("Invalid username or password");
   }
 }
 
