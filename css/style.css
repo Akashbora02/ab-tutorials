@@ -54,7 +54,7 @@ a {
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* Sections */
@@ -192,6 +192,7 @@ footer a {
 
 footer a:hover {
   color: var(--secondary);
+  text-decoration: none;
 }
 
 #footer {
@@ -259,6 +260,7 @@ iframe {
 
 .whatsapp-contact:hover {
   transform: translateY(-3px) scale(1.05);
+  text-decoration: none;
 }
 
 /* Pulse Animation */
@@ -390,6 +392,7 @@ iframe {
 
 .footer-link:hover {
   color: var(--secondary);
+  text-decoration: none;
 }
 
 /* Social icons */
