@@ -1,27 +1,141 @@
+/* ===============================
+   🎨 BRAND COLORS
+=============================== */
+:root {
+  --primary: #0d6efd;
+  --secondary: #198754;
+  --text-dark: #222;
+  --text-light: #555;
+}
+
+/* ===============================
+   🔤 GLOBAL STYLES
+=============================== */
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+h1 {
+  font-size: 42px;
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* Paragraph */
+p {
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Sections */
+section {
+  padding: 60px 0;
+}
+
+/* ===============================
+   🔘 BUTTONS
+=============================== */
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-success {
+  background-color: var(--secondary);
+  border: none;
+}
+
+/* Hover Effects */
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-success:hover {
+  background-color: #157347;
+}
+
+/* ===============================
+   🎬 HERO / CAROUSEL
+=============================== */
 .hero img {
   height: 60vh;
   object-fit: cover;
 }
 
 .carousel-caption {
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 12px;
 }
 
-/* FOOTER FIX */
-html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
+/* ===============================
+   📦 CARDS
+=============================== */
+.card {
+  transition: 0.3s;
 }
 
 .card:hover {
   transform: translateY(-8px);
+}
+
+/* ===============================
+   🔢 COUNTER
+=============================== */
+.counter {
+  font-size: 42px;
+  font-weight: bold;
+  color: var(--primary);
   transition: 0.3s;
+}
+
+.counter:hover {
+  transform: scale(1.1);
+}
+
+/* ===============================
+   🖼️ GALLERY
+=============================== */
+.gallery img {
+  height: 250px;
+  object-fit: cover;
+}
+
+/* ===============================
+   📍 FOOTER
+=============================== */
+#footer {
+  margin-top: auto;
+}
+
+.footerpara {
+  margin: auto;
+  padding: 12px 0;
 }
 
 footer a {
@@ -32,37 +146,29 @@ footer a:hover {
   text-decoration: underline;
 }
 
-.counter {
-  font-size: 42px;
-  font-weight: bold;
-  color: #0d6efd;
-  transition: 0.3s;
-}
-
-.counter:hover {
-  transform: scale(1.1);
-}
-
-#footer {
-  margin-top: auto;
-}
-
+/* ===============================
+   🗺️ IFRAME
+=============================== */
 iframe {
   border-radius: 10px;
 }
 
-.footerpara{
-  margin: auto;
-  padding: 12px 0px;
+/* ===============================
+   ✨ SCROLL ANIMATION
+=============================== */
+.section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.6s ease;
 }
 
-.gallery img {
-  height: 250px;
-  object-fit: cover;
+.section.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===============================
-   ✅ WHATSAPP CONTACT BUTTON (NEW STYLE)
+   💬 WHATSAPP BUTTON
 =============================== */
 .whatsapp-contact {
   position: fixed;
@@ -82,27 +188,23 @@ iframe {
   font-size: 16px;
   font-weight: 500;
 
-  text-decoration: none;
-
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 
   z-index: 999;
   transition: all 0.3s ease;
 }
 
-/* ICON */
 .whatsapp-contact img {
   width: 24px;
   height: 24px;
 }
 
-/* HOVER */
 .whatsapp-contact:hover {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 6px 18px rgba(0,0,0,0.4);
 }
 
-/* PULSE EFFECT */
+/* Pulse animation */
 .whatsapp-contact::before {
   content: "";
   position: absolute;
@@ -130,6 +232,7 @@ iframe {
 
   .img-fluid {
     height: 200px;
+    object-fit: cover;
   }
 
   .whatsapp-contact {
@@ -141,5 +244,4 @@ iframe {
     width: 20px;
     height: 20px;
   }
-
 }
