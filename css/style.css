@@ -402,32 +402,74 @@ iframe {
 }
 
 /* ===============================
-   🌙 DARK MODE
+   🌙 DARK MODE (FULL FIX)
 =============================== */
+
 body.dark-mode {
   background: #020617;
   color: #e5e7eb;
 }
 
+/* Headings */
 body.dark-mode h1,
 body.dark-mode h2,
-body.dark-mode h3 {
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5 {
   color: #60a5fa;
 }
 
+/* Paragraph */
 body.dark-mode p {
   color: #cbd5f5;
 }
 
-body.dark-mode .card {
-  background: #0f172a;
-  color: white;
-}
-
+/* Sections */
 body.dark-mode section {
   background: #020617 !important;
 }
 
+/* Fix Bootstrap bg-light */
+body.dark-mode .bg-light {
+  background: #020617 !important;
+}
+
+/* Cards */
+body.dark-mode .card {
+  background: #0f172a;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Navbar */
+body.dark-mode .navbar {
+  background: #020617 !important;
+}
+
+/* Footer */
 body.dark-mode footer {
-  background: #020617;
+  background: #020617 !important;
+}
+
+/* Tables */
+body.dark-mode .table {
+  color: #e5e7eb;
+}
+
+body.dark-mode .table thead {
+  background: #0f172a;
+}
+
+/* Inputs */
+body.dark-mode input,
+body.dark-mode select {
+  background: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+}
+
+/* Buttons */
+body.dark-mode .btn-light {
+  background: #0f172a;
+  color: white;
 }

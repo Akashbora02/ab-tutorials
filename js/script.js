@@ -18,12 +18,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Wait for navbar & footer
   await loadComponent("navbar", "components/navbar.html");
   await loadComponent("footer", "components/footer.html");
-
+  
+  loadTheme();   // 👈 important
   // Now safe to run everything
   startCounter();
   loadResults();
   setupScrollAnimation();
-  loadTheme();   // 👈 important
 });
 
 // ===============================
@@ -280,31 +280,18 @@ function showChart(classCount) {
   });
 }
 
-// ===============================
-// 🌙 DARK MODE TOGGLE
-// ===============================
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-
-  if (document.body.classList.contains("dark-mode")) {
-    localStorage.setItem("theme", "dark");
-  } else {
-    localStorage.setItem("theme", "light");
-  }
-}
-
-// Load saved theme
-window.addEventListener("DOMContentLoaded", () => {
-  const theme = localStorage.getItem("theme");
-
-  if (theme === "dark") {
-    document.body.classList.add("dark-mode");
-  }
-});
 
 function loadTheme() {
   const theme = localStorage.getItem("theme");
+
   if (theme === "dark") {
     document.body.classList.add("dark-mode");
   }
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+
+  const isDark = document.body.classList.contains("dark-mode");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 }
