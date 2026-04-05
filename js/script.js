@@ -169,11 +169,15 @@ function deleteResultFromSheet(name, date) {
     })
   })
   .then(res => res.json())
-  .then(() => {
+  .then(data => {
+    console.log(data);
     alert("Deleted successfully");
-    loadTestResults(); // reload table
+    loadTestResults();
   })
-  .catch(() => alert("Error deleting"));
+  .catch(err => {
+    console.error(err);
+    alert("Error deleting");
+  });
 }
 
 // ===============================
