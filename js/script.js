@@ -20,11 +20,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   await loadComponent("footer", "components/footer.html");
 
   startCounter();
-  loadResults();
   setupScrollAnimation();
   loadSheetData();
   filterTable();
   setupFilters();
+  loadTestResults();
 });
 
 // ===============================
@@ -111,33 +111,47 @@ function logout() {
 }
 
 // ===============================
-// LOAD RESULTS
+// LOAD TEST RESULTS (FROM GOOGLE SHEET)
 // ===============================
-function loadResults() {
+function loadTestResults() {
+
   const table = document.getElementById("resultTable");
   if (!table) return;
 
-  const results = JSON.parse(localStorage.getItem("results")) || [];
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
 
-  let html = "";
+  // 🔄 Loading state
+  table.innerHTML = "<tr><td colspan='5'>⏳ Loading...</td></tr>";
 
-  results.forEach((r, index) => {
-    html += `
-      <tr>
-        <td>${r.name}</td>
-        <td>Class ${r.class}</td>
-        <td>${r.score}/${r.total}</td>
-        <td>${r.date}</td>
-        <td>
-          <button onclick="deleteResult(${index})" class="btn btn-sm btn-danger">
-            Delete
-          </button>
-        </td>
-      </tr>
-    `;
-  });
+  fetch(sheetURL)
+    .then(res => res.text())
+    .then(data => {
 
-  table.innerHTML = html;
+      const rows = data.split("\n").slice(1);
+      let html = "";
+
+      rows.forEach(row => {
+        if (!row.trim()) return;
+
+        const cols = row.split(",");
+
+        html += `
+          <tr>
+            <td>${cols[0]}</td>
+            <td>Class ${cols[1]}</td>
+            <td>${cols[2]}/${cols[3]}</td>
+            <td>${cols[4]}</td>
+            <td>-</td>
+          </tr>
+        `;
+      });
+
+      table.innerHTML = html || "<tr><td colspan='5'>No Data</td></tr>";
+    })
+    .catch(() => {
+      table.innerHTML =
+        "<tr><td colspan='5' class='text-danger'>❌ Error loading data</td></tr>";
+    });
 }
 
 function deleteResult(index) {
