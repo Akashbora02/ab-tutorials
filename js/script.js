@@ -120,7 +120,7 @@ function loadTestResults() {
 
   const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
 
-  // 🔄 Loading state
+  // 🔄 Loading
   table.innerHTML = "<tr><td colspan='5'>⏳ Loading...</td></tr>";
 
   fetch(sheetURL)
@@ -128,27 +128,47 @@ function loadTestResults() {
     .then(data => {
 
       const rows = data.split("\n").slice(1);
-      let html = "";
+
+      // clear table
+      table.innerHTML = "";
 
       rows.forEach(row => {
         if (!row.trim()) return;
 
         const cols = row.split(",");
 
-        html += `
-          <tr>
-            <td>${cols[0]}</td>
-            <td>Class ${cols[1]}</td>
-            <td>${cols[2]}/${cols[3]}</td>
-            <td>${cols[4]}</td>
-            <td>
-              <button onclick="deleteResultFromSheet('${cols[0]}','${cols[4]}')" class="btn btn-sm btn-danger">Delete</button>
-            </td>
-          </tr>
+        // 🧱 Create row
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>${cols[0]}</td>
+          <td>Class ${cols[1]}</td>
+          <td>${cols[2]}/${cols[3]}</td>
+          <td>${cols[4]}</td>
         `;
+
+        // 🔘 Create delete button column
+        const td = document.createElement("td");
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-sm btn-danger";
+        btn.innerText = "Delete";
+
+        // ✅ Safe event (no syntax error)
+        btn.addEventListener("click", () => {
+          deleteResultFromSheet(cols[0], cols[4]);
+        });
+
+        td.appendChild(btn);
+        tr.appendChild(td);
+
+        table.appendChild(tr);
       });
 
-      table.innerHTML = html || "<tr><td colspan='5'>No Data</td></tr>";
+      if (!table.innerHTML) {
+        table.innerHTML = "<tr><td colspan='5'>No Data</td></tr>";
+      }
+
     })
     .catch(() => {
       table.innerHTML =
@@ -168,16 +188,16 @@ function deleteResultFromSheet(name, date) {
       date: date
     })
   })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-    alert("Deleted successfully");
-    loadTestResults();
-  })
-  .catch(err => {
-    console.error(err);
-    alert("Error deleting");
-  });
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      alert("Deleted successfully");
+      loadTestResults();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error deleting");
+    });
 }
 
 // ===============================
