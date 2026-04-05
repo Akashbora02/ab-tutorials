@@ -222,5 +222,7 @@ function submitTest() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initTest();
+  if (document.getElementById("question")) {
+    initTest();
+  }
 });

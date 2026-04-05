@@ -14,12 +14,14 @@
 <body>
 
   <script>
-    window.onload = () => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedName = localStorage.getItem("studentName");
       const nameInput = document.getElementById("studentName");
+
       if (nameInput && savedName) {
         nameInput.value = savedName;
       }
-    };
+    });
   </script>
 
   <div class="container text-center py-5">
