@@ -28,26 +28,39 @@
     <div class="progress mt-3" style="height: 25px;">
       <div id="progressBar" class="progress-bar bg-success progress-bar-striped progress-bar-animated"
         role="progressbar" style="width: 0%">
-      <p id="progressText" class="mt-2 text-center"></p>
+        <p id="progressText" class="mt-2 text-center"></p>
       </div>
     </div>
 
     <h3 id="question"></h3>
     <div id="options"></div>
 
-    <div class="nav-btn">
-      <button onclick="prevQuestion()">Prev</button>
-      <button onclick="nextQuestion()">Next</button>
+    <div class="d-flex justify-content-between mt-4">
+
+      <button onclick="prevQuestion()" class="btn btn-outline-secondary px-4">
+        ⬅ Prev
+      </button>
+
+      <button onclick="nextQuestion()" class="btn btn-primary px-4">
+        Next ➡
+      </button>
+
     </div>
 
-    <button onclick="submitTest()" class="submit-btn">Submit Test</button>
+    <div class="text-center mt-4">
+      <button onclick="submitTest()" class="btn btn-success btn-lg px-5 submit-btn">
+        ✅ Submit Test
+      </button>
+    </div>
 
     <div id="resultBox"></div>
 
   </div>
-  <button onclick="window.location.href='index.html'" class="back-btn">
-    ⬅ Back to Home
-  </button>
+  <div class="text-center mt-4">
+    <button onclick="window.location.href='index.html'" class="btn btn-outline-dark px-4">
+      ⬅ Back to Home
+    </button>
+  </div>
 
   <script src="js/mocktest.js" defer></script>
 </body>
