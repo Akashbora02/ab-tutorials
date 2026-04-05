@@ -110,9 +110,9 @@ section {
 .hero img {
   width: auto;
   height: auto;
-  max-width: 500px;
-  max-height: 500px;
-  object-fit: contain;
+  max-width: 100vh;
+  max-height: 100vh;
+  object-fit: cover;
 }
 
 /* Caption */
