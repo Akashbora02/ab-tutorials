@@ -25,7 +25,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   loadSheetData();
   filterTable();
   setupFilters();
-  
 });
 
 // ===============================
@@ -107,7 +106,7 @@ function login() {
 // LOGOUT
 // ===============================
 function logout() {
-  sessionStorage.removeItem("auth");
+  localStorage.removeItem("loggedIn");
   window.location.href = "index.html";
 }
 

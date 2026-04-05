@@ -1,14 +1,22 @@
-let timeLeft = 600; // 10 minutes = 600 sec
+const TEST_DURATION = 600;
+let timeLeft = TEST_DURATION;
 let timerInterval;
+
+function getStorage(key) {
+  return JSON.parse(localStorage.getItem(key)) || [];
+}
+
+function setStorage(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
 
 function startTest(cls) {
 
-  const registered = localStorage.getItem("studentRegistered");
+  const isRegistered = localStorage.getItem("studentRegistered") === "true";
 
-  if (!registered || registered !== "true") {
+  if (!isRegistered) {
     alert("Please register first!");
     window.location.href = "contact.html";
-    return;
   }
 
   const name = document.getElementById("studentName").value;
@@ -68,22 +76,44 @@ const questionBank = {
 
 let current = 0, answers = [];
 
-window.onload = () => {
+
+function initTest() {
+  current = 0;
+  const cls = localStorage.getItem("testClass");
+
+  // ✅ STEP 9 included here
+  if (!cls) {
+    window.location.href = "mocktest.html";
+    return;
+  }
+
   const savedName = localStorage.getItem("studentName");
 
-  if (savedName) {
-    document.getElementById("studentName").value = savedName;
+  const nameInput = document.getElementById("studentName");
+  if (nameInput && savedName) {
+    nameInput.value = savedName;
   }
-  const cls = localStorage.getItem("testClass");
-  window.questions = questionBank[cls];
-  answers = new Array(questions.length).fill(null);
 
+  let storedQuestions = JSON.parse(localStorage.getItem("questions"));
+
+  if (storedQuestions) {
+    window.questions = storedQuestions;
+  } else {
+    window.questions = [...questionBank[cls]];
+    questions.sort(() => Math.random() - 0.5);
+    localStorage.setItem("questions", JSON.stringify(questions));
+  }
+
+  const savedAnswers = JSON.parse(localStorage.getItem("answers"));
+  answers = savedAnswers || new Array(questions.length).fill(null);
+
+  // Title
   document.getElementById("testTitle").innerText =
     "Class " + cls + " Test";
 
   loadQuestion();
-  startTimer(); // 👈 ADD THIS
-};
+  startTimer();
+}
 
 function startTimer() {
   timerInterval = setInterval(() => {
@@ -107,37 +137,90 @@ function startTimer() {
 }
 
 function loadQuestion() {
+
   const q = questions[current];
   document.getElementById("question").innerText = q.q;
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
+  // 🔁 Create options
   q.options.forEach((opt, i) => {
+
     const btn = document.createElement("button");
     btn.innerText = opt;
 
-    if (answers[current] === i) btn.classList.add("selected");
+    // ✅ Highlight selected option
+    if (answers[current] === i) {
+      btn.classList.add("selected");
+    }
 
+    // ✅ Handle click
     btn.onclick = () => {
       answers[current] = i;
+
+      // Save progress
+      localStorage.setItem("answers", JSON.stringify(answers));
+
       loadQuestion();
     };
 
     optionsDiv.appendChild(btn);
   });
 
+  // ✅ Progress bar width
   document.getElementById("progressBar").style.width =
     ((current + 1) / questions.length) * 100 + "%";
+
+  // ✅ Attempted count (FIXED - outside loop)
+  const attempted = answers.filter(a => a !== null).length;
+
+  document.getElementById("progressBar").innerText =
+    `${attempted}/${questions.length} Attempted`;
 }
 
 function nextQuestion() { if (current < questions.length - 1) { current++; loadQuestion(); } }
 function prevQuestion() { if (current > 0) { current--; loadQuestion(); } }
 
 function submitTest() {
+
+  if (!confirm("Are you sure you want to submit?")) return;
+
+  clearInterval(timerInterval);
+  document.querySelector(".submit-btn").disabled = true; // 👈 add
+
   let score = 0;
-  questions.forEach((q, i) => { if (answers[i] === q.answer) score++; });
+  questions.forEach((q, i) => {
+    if (answers[i] === q.answer) score++;
+  });
 
   document.getElementById("resultBox").innerHTML =
     `<h3>🎉 Score: ${score}/${questions.length}</h3>`;
+
+  const results = getStorage("results");
+
+  results.push({
+    name: localStorage.getItem("studentName"),
+    class: localStorage.getItem("testClass"),
+    score: score,
+    total: questions.length,
+    date: new Date().toLocaleString()
+  });
+
+  setStorage("results", results);
+  questions.forEach((q, i) => {
+    console.log(`Q${i + 1}: Correct = ${q.options[q.answer]}`);
+  });
+
+  document.querySelectorAll("#options button").forEach(btn => {
+    btn.disabled = true;
+  });
+
+  localStorage.removeItem("answers");
+  localStorage.removeItem("testClass");
+  localStorage.removeItem("questions");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTest();
+});
