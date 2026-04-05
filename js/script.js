@@ -23,6 +23,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   loadResults();
   setupScrollAnimation();
   loadSheetData();
+  filterTable();
+  setupFilters();
+  
 });
 
 // ===============================
@@ -105,7 +108,7 @@ function login() {
 // ===============================
 function logout() {
   sessionStorage.removeItem("auth");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 // ===============================

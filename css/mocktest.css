@@ -14,12 +14,12 @@ body {
 
 #question {
   font-size: 20px;
-  margin-bottom: 15px;
+  margin: 15px 0;
 }
 
 #options button {
   width: 100%;
-  margin: 6px 0;
+  margin: 8px 0;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #ddd;
@@ -36,21 +36,30 @@ body {
   color: white;
 }
 
+.nav-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: green;
+  color: white;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+}
+
 #timer {
   text-align: right;
   color: red;
-  font-weight: bold;
 }
 
-button {
-  border: none;
+.progress {
+  height: 8px;
 }
 
-.back-btn {
-  margin-top: 15px;
-  background: #6c757d;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
+.progress-bar {
+  background: #1e3a8a;
 }
