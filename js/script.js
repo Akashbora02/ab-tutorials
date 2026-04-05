@@ -141,7 +141,9 @@ function loadTestResults() {
             <td>Class ${cols[1]}</td>
             <td>${cols[2]}/${cols[3]}</td>
             <td>${cols[4]}</td>
-            <td>-</td>
+            <td>
+              <button onclick="deleteResultFromSheet('${cols[0]}','${cols[4]}')" class="btn btn-sm btn-danger">Delete</button>
+            /td>
           </tr>
         `;
       });
@@ -154,11 +156,24 @@ function loadTestResults() {
     });
 }
 
-function deleteResult(index) {
-  let results = JSON.parse(localStorage.getItem("results")) || [];
-  results.splice(index, 1);
-  localStorage.setItem("results", JSON.stringify(results));
-  loadResults();
+function deleteResultFromSheet(name, date) {
+
+  if (!confirm("Delete this result?")) return;
+
+  fetch("https://script.google.com/macros/s/AKfycbxq8ZLVlGB8h2o5xRDAj-mW_oqUEBCa2WiT7Q5B7hWgF5-tDesL21vCND3hB1gEEuX4BQ/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      action: "delete",
+      name: name,
+      date: date
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("Deleted successfully");
+    loadTestResults(); // reload table
+  })
+  .catch(() => alert("Error deleting"));
 }
 
 // ===============================
