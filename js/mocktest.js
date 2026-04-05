@@ -212,18 +212,18 @@ function submitTest() {
     date: new Date().toLocaleString()
   });
 
-fetch("https://script.google.com/macros/s/AKfycbxq8ZLVlGB8h2o5xRDAj-mW_oqUEBCa2WiT7Q5B7hWgF5-tDesL21vCND3hB1gEEuX4BQ/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    name: localStorage.getItem("studentName"),
-    class: localStorage.getItem("testClass"),
-    score: score,
-    total: questions.length,
-    date: new Date().toLocaleString()
+  fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      name: localStorage.getItem("studentName"),
+      class: localStorage.getItem("testClass"),
+      score: score,
+      total: questions.length,
+      date: new Date().toLocaleString()
+    })
   })
-})
-.then(() => console.log("Saved to sheet"))
-.catch(err => console.error(err));
+    .then(() => console.log("Saved to sheet"))
+    .catch(err => console.error(err));
 
   questions.forEach((q, i) => {
     console.log(`Q${i + 1}: Correct = ${q.options[q.answer]}`);

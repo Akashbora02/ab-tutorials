@@ -118,7 +118,7 @@ function loadTestResults() {
   const table = document.getElementById("resultTable");
   if (!table) return;
 
-  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
 
   // 🔄 Loading state
   table.innerHTML = "<tr><td colspan='5'>⏳ Loading...</td></tr>";
