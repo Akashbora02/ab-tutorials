@@ -175,12 +175,10 @@ function loadQuestion() {
     optionsDiv.appendChild(btn);
   });
 
-  // ✅ Progress bar width
+  const attempted = answers.filter(a => a !== null).length;
+
   document.getElementById("progressBar").style.width =
     ((current + 1) / questions.length) * 100 + "%";
-
-  // ✅ Attempted count (FIXED - outside loop)
-  const attempted = answers.filter(a => a !== null).length;
 
   document.getElementById("progressText").innerText =
     `${attempted}/${questions.length} Attempted`;

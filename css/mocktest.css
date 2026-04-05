@@ -1,65 +1,101 @@
+/* 🌐 BODY */
 body {
+  background: linear-gradient(135deg, #eef2f7, #dbeafe);
   font-family: 'Poppins', sans-serif;
-  background: #f1f5f9;
 }
 
+/* 📦 MAIN CARD */
 .container {
   max-width: 700px;
-  margin: auto;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-#question {
-  font-size: 20px;
-  margin: 15px 0;
+/* 🏷 TITLE */
+#testTitle {
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-#options button {
-  width: 100%;
-  margin: 8px 0;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  transition: 0.3s;
-}
-
-#options button:hover {
-  background: #1e3a8a;
-  color: white;
-}
-
-.selected {
-  background: #1e3a8a !important;
-  color: white;
-}
-
-.nav-btn {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.submit-btn {
-  width: 100%;
-  background: green;
-  color: white;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 8px;
-}
-
+/* ⏱ TIMER */
 #timer {
+  font-weight: 600;
+  color: #dc2626;
   text-align: right;
-  color: red;
 }
 
+/* 📊 PROGRESS BAR */
 .progress {
-  height: 8px;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-bar {
-  background: #0693bb;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ❓ QUESTION */
+#question {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+/* 🔘 OPTIONS */
+#options button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+#options button:hover {
+  background: #e0f2fe;
+  transform: scale(1.02);
+}
+
+/* ✅ SELECTED OPTION */
+.selected {
+  background: #2563eb !important;
+  color: white !important;
+  border: none;
+}
+
+/* 🔄 NAV BUTTONS */
+.nav-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.nav-btn button {
+  min-width: 100px;
+}
+
+/* 🚀 SUBMIT BUTTON */
+.submit-btn {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* 🔙 BACK BUTTON */
+.back-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+/* 🧾 RESULT BOX */
+#resultBox {
+  margin-top: 20px;
+  text-align: center;
 }
