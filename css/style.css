@@ -314,7 +314,8 @@ iframe {
   /* Image smaller */
   .hero img {
     height: auto;
-    object-fit: cover;
+    width: auto;
+    object-fit: fill;
   }
 
   /* Caption full width */
