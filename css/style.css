@@ -319,6 +319,7 @@ iframe {
 
   /* Caption full width */
  .carousel-caption {
+    display: none;
     bottom: 10px;
     left: 10px;
     right: 10px;
