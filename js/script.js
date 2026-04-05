@@ -143,7 +143,7 @@ function loadTestResults() {
             <td>${cols[4]}</td>
             <td>
               <button onclick="deleteResultFromSheet('${cols[0]}','${cols[4]}')" class="btn btn-sm btn-danger">Delete</button>
-            /td>
+            </td>
           </tr>
         `;
       });
