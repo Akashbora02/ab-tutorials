@@ -182,7 +182,7 @@ function loadQuestion() {
   // ✅ Attempted count (FIXED - outside loop)
   const attempted = answers.filter(a => a !== null).length;
 
-  document.getElementById("progressBar").innerText =
+  document.getElementById("progressText").innerText =
     `${attempted}/${questions.length} Attempted`;
 }
 
