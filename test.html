@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Mock Test</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/mocktest.css">
+<head>
+  <meta charset="UTF-8">
+  <title>Mock Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/mocktest.css">
 </head>
 
 <body>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = localStorage.getItem("loggedIn");
-  if (!isLoggedIn || isLoggedIn !== "true") {
-    window.location.href = "login.html";
-  }
-});
-</script>
+  <script>
+    const isLoggedIn = localStorage.getItem("loggedIn");
+    if (!isLoggedIn || isLoggedIn !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
 
-<div class="container">
+  <div class="container">
 
-  <h2 id="testTitle"></h2>
+    <h2 id="testTitle"></h2>
 
-  <div id="timer">⏱ Time: 10:00</div>
+    <div id="timer">⏱ Time: 10:00</div>
 
-  <div class="progress mt-3">
-    <div id="progressBar" class="progress-bar"></div>
+    <div class="progress mt-3">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <h3 id="question"></h3>
+    <div id="options"></div>
+
+    <div class="nav-btn">
+      <button onclick="prevQuestion()">Prev</button>
+      <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <button onclick="submitTest()" class="submit-btn">Submit Test</button>
+
+    <div id="resultBox"></div>
+
   </div>
+  <button onclick="window.location.href='index.html'" class="back-btn">
+    ⬅ Back to Home
+  </button>
 
-  <h3 id="question"></h3>
-  <div id="options"></div>
-
-  <div class="nav-btn">
-    <button onclick="prevQuestion()">Prev</button>
-    <button onclick="nextQuestion()">Next</button>
-  </div>
-
-  <button onclick="submitTest()" class="submit-btn">Submit Test</button>
-
-  <div id="resultBox"></div>
-
-</div>
-<button onclick="window.location.href='index.html'" class="back-btn">
-  ⬅ Back to Home
-</button>
-
-<script src="js/mocktest.js" defer></script>
+  <script src="js/mocktest.js" defer></script>
 </body>
+
 </html>

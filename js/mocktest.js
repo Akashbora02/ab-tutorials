@@ -17,6 +17,7 @@ function startTest(cls) {
   if (!isRegistered) {
     alert("Please register first!");
     window.location.href = "contact.html";
+    return;
   }
 
   const name = document.getElementById("studentName").value;
@@ -107,9 +108,10 @@ function initTest() {
   const savedAnswers = JSON.parse(localStorage.getItem("answers"));
   answers = savedAnswers || new Array(questions.length).fill(null);
 
-  // Title
-  document.getElementById("testTitle").innerText =
-    "Class " + cls + " Test";
+  const titleEl = document.getElementById("testTitle");
+  if (titleEl) {
+    titleEl.innerText = "Class " + cls + " Test";
+  }
 
   loadQuestion();
   startTimer();
@@ -222,7 +224,10 @@ function submitTest() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  // ✅ Run ONLY on test page
   if (document.getElementById("question")) {
     initTest();
   }
+
 });
