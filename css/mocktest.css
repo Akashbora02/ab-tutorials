@@ -2,11 +2,13 @@
 body {
   background: linear-gradient(135deg, #eef2f7, #dbeafe);
   font-family: 'Poppins', sans-serif;
+  margin: 0;
 }
 
 /* 📦 MAIN CARD */
 .container {
   max-width: 700px;
+  margin: 50px auto;
   background: #ffffff;
   padding: 30px;
   border-radius: 16px;
@@ -26,16 +28,18 @@ body {
   text-align: right;
 }
 
-/* 📊 PROGRESS BAR */
+/* 📊 PROGRESS */
 .progress {
   height: 20px;
   border-radius: 10px;
   overflow: hidden;
 }
 
-.progress-bar {
-  font-size: 12px;
+#progressText {
+  font-size: 14px;
   font-weight: 500;
+  text-align: center;
+  margin-top: 5px;
 }
 
 /* ❓ QUESTION */
@@ -54,6 +58,7 @@ body {
   border: 1px solid #ddd;
   background: #f9fafb;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 #options button:hover {
@@ -61,25 +66,21 @@ body {
   transform: scale(1.02);
 }
 
-/* ✅ SELECTED OPTION */
+/* ✅ SELECTED */
 .selected {
   background: #2563eb !important;
   color: white !important;
   border: none;
 }
 
-/* 🔄 NAV BUTTONS */
-.nav-btn {
+/* 🔄 NAVIGATION */
+.nav-container {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
-.nav-btn button {
-  min-width: 100px;
-}
-
-/* 🚀 SUBMIT BUTTON */
+/* 🚀 SUBMIT */
 .submit-btn {
   width: 100%;
   margin-top: 20px;
@@ -94,7 +95,7 @@ body {
   left: 20px;
 }
 
-/* 🧾 RESULT BOX */
+/* 🧾 RESULT */
 #resultBox {
   margin-top: 20px;
   text-align: center;
