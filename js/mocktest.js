@@ -14,7 +14,10 @@ function startTest(cls) {
 
   const isRegistered = localStorage.getItem("studentRegistered") === "true";
 
-  if (!isRegistered) {
+  // ✅ ALSO allow if name exists (fallback)
+  const savedName = localStorage.getItem("studentName");
+
+  if (!isRegistered && !savedName) {
     alert("Please register first!");
     window.location.href = "contact.html";
     return;
@@ -27,7 +30,9 @@ function startTest(cls) {
     return;
   }
 
+  // ✅ Save both
   localStorage.setItem("studentName", name);
+  localStorage.setItem("studentRegistered", "true");
   localStorage.setItem("testClass", cls);
 
   window.location.href = "test.html";
