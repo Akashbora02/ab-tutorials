@@ -19,8 +19,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   await loadComponent("navbar", "components/navbar.html");
   await loadComponent("footer", "components/footer.html");
 
-  loadTheme();   // 👈 important
-  // Now safe to run everything
   startCounter();
   loadResults();
   setupScrollAnimation();
@@ -288,20 +286,4 @@ function showChart(classCount) {
       maintainAspectRatio: false, // 👈 IMPORTANT
     }
   });
-}
-
-
-function loadTheme() {
-  const theme = localStorage.getItem("theme");
-
-  if (theme === "dark") {
-    document.body.classList.add("dark-mode");
-  }
-}
-
-function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-
-  const isDark = document.body.classList.contains("dark-mode");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
 }

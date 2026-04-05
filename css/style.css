@@ -25,7 +25,11 @@ body {
 }
 
 /* Headings */
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-weight: 600;
   color: var(--primary);
 }
@@ -104,6 +108,7 @@ section {
    🎬 HERO / CAROUSEL
 =============================== */
 .hero img {
+  width: 100%;
   height: 65vh;
   object-fit: cover;
 }
@@ -283,9 +288,20 @@ iframe {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.6; }
-  70% { transform: scale(1.4); opacity: 0; }
-  100% { transform: scale(1); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 
 /* ===============================
@@ -311,15 +327,31 @@ iframe {
 =============================== */
 @media (max-width: 768px) {
 
-  /* Image smaller */
+  section {
+    padding: 40px 0;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
   .hero img {
+    width: 100%;
     height: auto;
-    width: auto;
-    object-fit: fill;
+    /* 👈 important */
+    max-height: 300px;
+    /* control size */
+    object-fit: contain;
+    /* 👈 show full image */
+    background: black;
   }
 
   /* Caption full width */
- .carousel-caption {
+  .carousel-caption {
     display: none;
     bottom: 10px;
     left: 10px;
@@ -330,21 +362,17 @@ iframe {
     padding: 12px;
   }
 
-  .carousel-caption h1 {
-    font-size: 18px;
+  .card {
+    height: 100%;
   }
 
-  .carousel-caption h2 {
-    font-size: 16px;
+  /* Add spacing */
+  .row>div {
+    margin-bottom: 20px;
   }
 
-  .carousel-caption p {
-    font-size: 13px;
-  }
-
-  .carousel-caption .btn {
-    font-size: 12px;
-    padding: 6px 10px;
+  .card {
+    margin-bottom: 15px;
   }
 
   .whatsapp-contact {
@@ -412,7 +440,7 @@ iframe {
 
 /* Divider */
 .footer-line {
-  border-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Bottom text */
@@ -421,80 +449,7 @@ iframe {
   font-size: 14px;
 }
 
-  .chart-box {
-    width: 220px;
-    height: 220px;
-  }
-
-/* ===============================
-   🌙 DARK MODE (FULL FIX)
-=============================== */
-
-body.dark-mode {
-  background: #020617;
-  color: #e5e7eb;
-}
-
-/* Headings */
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode h5 {
-  color: #60a5fa;
-}
-
-/* Paragraph */
-body.dark-mode p {
-  color: #cbd5f5;
-}
-
-/* Sections */
-body.dark-mode section {
-  background: #020617 !important;
-}
-
-/* Fix Bootstrap bg-light */
-body.dark-mode .bg-light {
-  background: #020617 !important;
-}
-
-/* Cards */
-body.dark-mode .card {
-  background: #0f172a;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-/* Navbar */
-body.dark-mode .navbar {
-  background: #020617 !important;
-}
-
-/* Footer */
-body.dark-mode footer {
-  background: #020617 !important;
-}
-
-/* Tables */
-body.dark-mode .table {
-  color: #e5e7eb;
-}
-
-body.dark-mode .table thead {
-  background: #0f172a;
-}
-
-/* Inputs */
-body.dark-mode input,
-body.dark-mode select {
-  background: #0f172a;
-  color: white;
-  border: 1px solid #334155;
-}
-
-/* Buttons */
-body.dark-mode .btn-light {
-  background: #0f172a;
-  color: white;
+.chart-box {
+  width: 220px;
+  height: 220px;
 }
