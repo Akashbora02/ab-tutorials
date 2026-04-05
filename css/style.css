@@ -313,7 +313,7 @@ iframe {
 
   /* Image smaller */
   .hero img {
-    height: 45vh;
+    height: 65vh;
     object-fit: cover;
   }
 
