@@ -220,43 +220,43 @@ function submitTest() {
 
   if (!confirm("Are you sure you want to submit?")) return;
 
-  clearInterval(timerInterval);
   if (document.querySelector(".submit-btn").disabled) return;
+
+  clearInterval(timerInterval);
 
   let score = 0;
   questions.forEach((q, i) => {
     if (answers[i] === q.answer) score++;
   });
 
-  document.getElementById("resultBox").innerHTML =
-    `<h3>🎉 Score: ${score}/${questions.length}</h3>`;
+  const name = localStorage.getItem("studentName");
+  const cls = localStorage.getItem("testClass");
 
-  const results = getStorage("results");
+  // ✅ UNIQUE ID
+  const id = Date.now();
 
-  results.push({
-    name: localStorage.getItem("studentName"),
-    class: localStorage.getItem("testClass"),
+  const resultData = {
+    id: id,
+    name: name,
+    class: cls,
     score: score,
     total: questions.length,
     date: new Date().toLocaleString()
-  });
+  };
 
+  document.getElementById("resultBox").innerHTML =
+    `<h3>🎉 Score: ${score}/${questions.length}</h3>`;
+
+  // ✅ SAVE TO GOOGLE SHEET
   fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
     method: "POST",
-    body: JSON.stringify({
-      name: localStorage.getItem("studentName"),
-      class: localStorage.getItem("testClass"),
-      score: score,
-      total: questions.length,
-      date: new Date().toLocaleString()
-    })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(resultData)
   })
-    .then(() => console.log("Saved to sheet"))
+    .then(() => console.log("Saved with ID:", id))
     .catch(err => console.error(err));
-
-  questions.forEach((q, i) => {
-    console.log(`Q${i + 1}: Correct = ${q.options[q.answer]}`);
-  });
 
   document.querySelectorAll("#options button").forEach(btn => {
     btn.disabled = true;

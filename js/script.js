@@ -120,7 +120,6 @@ function loadTestResults() {
 
   const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
 
-  // 🔄 Loading
   table.innerHTML = "<tr><td colspan='5'>⏳ Loading...</td></tr>";
 
   fetch(sheetURL)
@@ -128,22 +127,22 @@ function loadTestResults() {
     .then(data => {
 
       const rows = data.split("\n").slice(1);
-
-      // clear table
       table.innerHTML = "";
 
       rows.forEach(row => {
         if (!row.trim()) return;
 
         const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+        if (!cols || cols.length < 6) return;
 
-        // CLEAN ALL VALUES
-        const name = clean(cols[0]);
-        const cls = clean(cols[1]);
-        const score = clean(cols[2]);
-        const total = clean(cols[3]);
-        const date = clean(cols[4]); // 👈 FIXED
-        // 🧱 Create row
+        // ✅ NEW STRUCTURE (ID added)
+        const id = clean(cols[0]);
+        const name = clean(cols[1]);
+        const cls = clean(cols[2]);
+        const score = clean(cols[3]);
+        const total = clean(cols[4]);
+        const date = clean(cols[5]);
+
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
@@ -153,16 +152,15 @@ function loadTestResults() {
           <td>${date}</td>
         `;
 
-        // 🔘 Create delete button column
         const td = document.createElement("td");
 
         const btn = document.createElement("button");
         btn.className = "btn btn-sm btn-danger";
         btn.innerText = "Delete";
 
-        // ✅ Safe event (no syntax error)
+        // ✅ DELETE USING ID
         btn.addEventListener("click", () => {
-          deleteResultFromSheet(name, date);
+          deleteResultFromSheet(id);
         });
 
         td.appendChild(btn);
@@ -182,23 +180,18 @@ function loadTestResults() {
     });
 }
 
-function deleteResultFromSheet(name, date) {
+function deleteResultFromSheet(id) {
 
-  if (!confirm(`Delete result of ${name}?`)) return;
+  if (!confirm("Delete this result?")) return;
 
-  // ✅ Clean again (extra safety)
-  name = name.trim();
-  date = date.trim();
-
-  fetch("https://script.google.com/macros/s/AKfycbxq8ZLVlGB8h2o5xRDAj-mW_oqUEBCa2WiT7Q5B7hWgF5-tDesL21vCND3hB1gEEuX4BQ/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       action: "delete",
-      name: name,
-      date: date
+      id: id
     })
   })
     .then(res => res.json())
@@ -210,12 +203,12 @@ function deleteResultFromSheet(name, date) {
         alert("✅ Deleted successfully");
         loadTestResults();
       } else {
-        alert("❌ Delete failed (row not matched)");
+        alert("❌ Delete failed");
       }
 
     })
     .catch(err => {
-      console.error("DELETE ERROR:", err);
+      console.error(err);
       alert("❌ Error deleting");
     });
 }
