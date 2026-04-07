@@ -213,10 +213,9 @@ function deleteResultFromSheet(id) {
         setTimeout(() => {
           loadTestResults();
         }, 800);
-        // ⏳ wait for sheet update
         setTimeout(() => {
-          loadTestResults();
-        }, 800);
+          window.location.reload();
+        }, 1000);
       } else {
         alert("❌ Delete failed: " + data.message);
       }
