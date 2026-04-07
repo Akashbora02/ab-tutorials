@@ -28,7 +28,7 @@ async function startTest(cls) {
     .replace(/\s+/g, "")  // remove all spaces
     .trim();
 
-  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
 
   try {
 
@@ -260,7 +260,10 @@ function submitTest() {
 
   if (!confirm("Are you sure you want to submit?")) return;
 
-  if (document.querySelector(".submit-btn").disabled) return;
+  const submitBtn = document.querySelector(".submit-btn");
+  if (submitBtn.disabled) return;
+
+  submitBtn.disabled = true; // ✅ prevent double submit
 
   clearInterval(timerInterval);
 
@@ -287,6 +290,8 @@ function submitTest() {
   document.getElementById("resultBox").innerHTML =
     `<h3>🎉 Score: ${score}/${questions.length}</h3>`;
 
+  console.log("Sending data:", resultData); // 🔍 DEBUG
+
   // ✅ SAVE TO GOOGLE SHEET
   fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
     method: "POST",
@@ -295,8 +300,24 @@ function submitTest() {
     },
     body: JSON.stringify(resultData)
   })
-    .then(() => console.log("Saved with ID:", id))
-    .catch(err => console.error(err));
+    .then(res => res.json()) // ✅ IMPORTANT
+    .then(data => {
+
+      console.log("SAVE RESPONSE:", data);
+
+      if (data.status === "success") {
+        alert("✅ Result saved successfully");
+      } else {
+        alert("❌ Failed to save result");
+        submitBtn.disabled = false; // allow retry
+      }
+
+    })
+    .catch(err => {
+      console.error("SAVE ERROR:", err);
+      alert("❌ Network error while saving");
+      submitBtn.disabled = false;
+    });
 
   document.querySelectorAll("#options button").forEach(btn => {
     btn.disabled = true;
