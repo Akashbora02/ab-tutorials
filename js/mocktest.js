@@ -313,8 +313,10 @@ function submitTest() {
 
       if (data.status === "success") {
         alert("✅ Result saved successfully");
+        window.location.href = "index.html";
       } else {
         alert("❌ Failed to save result");
+        window.location.href = "mocktest.html";
         submitBtn.disabled = false;
       }
 
@@ -322,6 +324,7 @@ function submitTest() {
     .catch(err => {
       console.error("SAVE ERROR:", err);
       alert("❌ Network / Script error");
+      window.location.href = "mocktest.html";
       submitBtn.disabled = false;
     });
 
