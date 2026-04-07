@@ -16,12 +16,17 @@ function setStorage(key, value) {
 
 async function startTest(cls) {
 
-  const name = document.getElementById("studentName").value.trim();
+  const nameInput = document.getElementById("studentName").value;
 
-  if (!name) {
+  if (!nameInput || !nameInput.trim()) {
     alert("Enter your name");
     return;
   }
+
+  const inputName = nameInput
+    .toLowerCase()
+    .replace(/\s+/g, "")  // remove all spaces
+    .trim();
 
   const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
 
@@ -29,12 +34,11 @@ async function startTest(cls) {
 
     const res = await fetch(sheetURL);
 
-    // ✅ FIX 1: Check response
-    if (!res.ok) throw new Error("Network response failed");
+    if (!res.ok) throw new Error("Network error");
 
     const data = await res.text();
 
-    if (!data) throw new Error("Empty sheet data");
+    if (!data) throw new Error("Empty data");
 
     const rows = data.split("\n").slice(1);
 
@@ -47,35 +51,48 @@ async function startTest(cls) {
       const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
       if (!cols) continue;
 
-      const studentName = clean(cols[1]).toLowerCase();
-      const studentClass = clean(cols[8]);
-
-      // ✅ FIX 2: Normalize class
-      const normalizedClass = studentClass
+      // ✅ CLEAN + NORMALIZE NAME
+      const sheetName = clean(cols[1])
+        .toLowerCase()
         .replace(/\s+/g, "")
-        .toLowerCase();
+        .trim();
+
+      // ✅ CLEAN + NORMALIZE CLASS
+      const sheetClass = clean(cols[8])
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .trim();
 
       const expectedClass = `class${cls}`;
 
+      // 🔍 DEBUG (optional - remove later)
+      console.log({
+        input: inputName,
+        sheet: sheetName,
+        class: sheetClass
+      });
+
+      // ✅ FINAL MATCH
       if (
-        studentName === name.toLowerCase() &&
-        normalizedClass.includes(expectedClass)
+        sheetName === inputName &&
+        sheetClass.includes(expectedClass)
       ) {
         found = true;
-        break; // ✅ IMPORTANT
+        break;
       }
     }
 
-    // ✅ FIX 3: If not found
     if (!found) {
-      alert("❌ You are not registered OR class mismatch!\nPlease take admission first.");
+      alert("❌ Name not found or class mismatch.\nPlease take admission first.");
       window.location.href = "contact.html";
       return;
     }
 
-    // ✅ PASS → START TEST
-    localStorage.setItem("studentName", name);
+    // ✅ START TEST
+    localStorage.setItem("studentName", nameInput.trim());
     localStorage.setItem("testClass", cls);
+
+    // reset old test
     localStorage.removeItem("answers");
     localStorage.removeItem("questions");
 
@@ -85,8 +102,7 @@ async function startTest(cls) {
 
     console.error("FETCH ERROR:", err);
 
-    // ✅ Better user message
-    alert("⚠️ Unable to verify registration.\nPlease check internet or try again.");
+    alert("⚠️ Unable to verify registration.\nCheck internet or try again.");
   }
 }
 
