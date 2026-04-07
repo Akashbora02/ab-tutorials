@@ -184,18 +184,26 @@ function deleteResultFromSheet(id) {
 
   if (!confirm("Delete this result?")) return;
 
+  console.log("Deleting ID:", id); // 🔍 DEBUG
+
   fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
     body: JSON.stringify({
       action: "delete",
-      id: id
+      id: String(id) // ✅ FORCE STRING
     })
   })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => res.text()) // ✅ safer
+    .then(text => {
+
+      console.log("RAW DELETE RESPONSE:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Invalid JSON response");
+      }
 
       console.log("DELETE RESPONSE:", data);
 
@@ -203,13 +211,13 @@ function deleteResultFromSheet(id) {
         alert("✅ Deleted successfully");
         loadTestResults();
       } else {
-        alert("❌ Delete failed");
+        alert("❌ Delete failed: " + data.message);
       }
 
     })
     .catch(err => {
-      console.error(err);
-      alert("❌ Error deleting");
+      console.error("DELETE ERROR:", err);
+      alert("❌ Network / Script error");
     });
 }
 
