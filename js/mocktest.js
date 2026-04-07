@@ -2,6 +2,10 @@ const TEST_DURATION = 600;
 let timeLeft = TEST_DURATION;
 let timerInterval;
 
+function clean(value) {
+  return value ? value.replace(/"/g, "").trim() : "";
+}
+
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key)) || [];
 }
@@ -19,34 +23,50 @@ async function startTest(cls) {
     return;
   }
 
-  // 🔗 Fetch admission sheet
   const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
 
   try {
+
     const res = await fetch(sheetURL);
+
+    // ✅ FIX 1: Check response
+    if (!res.ok) throw new Error("Network response failed");
+
     const data = await res.text();
+
+    if (!data) throw new Error("Empty sheet data");
 
     const rows = data.split("\n").slice(1);
 
     let found = false;
 
-    rows.forEach(row => {
-      const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+    for (let row of rows) {
 
-      if (!cols) return;
+      if (!row.trim()) continue;
+
+      const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+      if (!cols) continue;
 
       const studentName = clean(cols[1]).toLowerCase();
       const studentClass = clean(cols[8]);
 
-      // ✅ MATCH NAME + CLASS
+      // ✅ FIX 2: Normalize class
+      const normalizedClass = studentClass
+        .replace(/\s+/g, "")
+        .toLowerCase();
+
+      const expectedClass = `class${cls}`;
+
       if (
         studentName === name.toLowerCase() &&
-        studentClass.includes(`Class ${cls}`)
+        normalizedClass.includes(expectedClass)
       ) {
         found = true;
+        break; // ✅ IMPORTANT
       }
-    });
+    }
 
+    // ✅ FIX 3: If not found
     if (!found) {
       alert("❌ You are not registered OR class mismatch!\nPlease take admission first.");
       window.location.href = "contact.html";
@@ -58,11 +78,15 @@ async function startTest(cls) {
     localStorage.setItem("testClass", cls);
     localStorage.removeItem("answers");
     localStorage.removeItem("questions");
+
     window.location.href = "test.html";
 
   } catch (err) {
-    alert("Error checking registration");
-    console.error(err);
+
+    console.error("FETCH ERROR:", err);
+
+    // ✅ Better user message
+    alert("⚠️ Unable to verify registration.\nPlease check internet or try again.");
   }
 }
 
