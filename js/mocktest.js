@@ -28,7 +28,7 @@ async function startTest(cls) {
     .replace(/\s+/g, "")  // remove all spaces
     .trim();
 
-  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
 
   try {
 
