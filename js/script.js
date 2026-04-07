@@ -184,10 +184,17 @@ function loadTestResults() {
 
 function deleteResultFromSheet(name, date) {
 
-  if (!confirm("Delete this result?")) return;
+  if (!confirm(`Delete result of ${name}?`)) return;
+
+  // ✅ Clean again (extra safety)
+  name = name.trim();
+  date = date.trim();
 
   fetch("https://script.google.com/macros/s/AKfycbxq8ZLVlGB8h2o5xRDAj-mW_oqUEBCa2WiT7Q5B7hWgF5-tDesL21vCND3hB1gEEuX4BQ/exec", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       action: "delete",
       name: name,
@@ -196,13 +203,20 @@ function deleteResultFromSheet(name, date) {
   })
     .then(res => res.json())
     .then(data => {
-      console.log(data);
-      alert("Deleted successfully");
-      loadTestResults();
+
+      console.log("DELETE RESPONSE:", data);
+
+      if (data.status === "success") {
+        alert("✅ Deleted successfully");
+        loadTestResults();
+      } else {
+        alert("❌ Delete failed (row not matched)");
+      }
+
     })
     .catch(err => {
-      console.error(err);
-      alert("Error deleting");
+      console.error("DELETE ERROR:", err);
+      alert("❌ Error deleting");
     });
 }
 
