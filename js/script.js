@@ -118,7 +118,7 @@ function loadTestResults() {
   const table = document.getElementById("resultTable");
   if (!table) return;
 
-  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv";
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3tRAKryHF4gvSHyVDoR4YDLDl5FDjR1IIR8-9IXgsij9RE5ShxQgN_JFSgZZN1EIQrsnQKW5ENoBb/pub?output=csv&nocache=" + new Date().getTime();
 
   table.innerHTML = "<tr><td colspan='5'>⏳ Loading...</td></tr>";
 
@@ -209,7 +209,14 @@ function deleteResultFromSheet(id) {
 
       if (data.status === "success") {
         alert("✅ Deleted successfully");
-        loadTestResults();
+        // ⏳ wait for sheet update
+        setTimeout(() => {
+          loadTestResults();
+        }, 800);
+        // ⏳ wait for sheet update
+        setTimeout(() => {
+          loadTestResults();
+        }, 800);
       } else {
         alert("❌ Delete failed: " + data.message);
       }
