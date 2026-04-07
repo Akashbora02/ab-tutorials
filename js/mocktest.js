@@ -72,19 +72,23 @@ async function startTest(cls) {
         class: sheetClass
       });
 
-      // ✅ FINAL MATCH
-      if (
-        sheetName === inputName &&
-        sheetClass.includes(expectedClass)
-      ) {
+      // ✅ safer name matching
+      const nameMatch =
+        sheetName.includes(inputName) ||
+        inputName.includes(sheetName);
+
+      // ✅ class matching
+      const classMatch = sheetClass.includes(expectedClass);
+
+      if (nameMatch && classMatch) {
         found = true;
         break;
       }
     }
 
     if (!found) {
-      alert("❌ Name not found or class mismatch.\nPlease take admission first.");
-      window.location.href = "contact.html";
+      alert("Name not found. Please check spelling.");
+      window.location.href = "mocktest.html";
       return;
     }
 
