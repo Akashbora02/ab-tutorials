@@ -109,13 +109,15 @@ section {
 =============================== */
 /* 🎬 CAROUSEL FIXED HEIGHT */
 .hero {
-  height: 95vh; /* same height for all slides */
+  height: 95vh;
+  /* same height for all slides */
 }
 
 .hero img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* fills without distortion */
+  height: 95vh;
+  object-fit: cover;
+  /* fills without distortion */
 }
 
 /* Caption */
@@ -345,14 +347,16 @@ iframe {
     font-size: 20px;
   }
 
+  .hero {
+    height: auto;
+    /* 👈 remove fixed height */
+  }
+
   .hero img {
     width: 100%;
     height: auto;
-    /* 👈 important */
     max-height: 300px;
-    /* control size */
     object-fit: contain;
-    /* 👈 show full image */
     background: black;
   }
 

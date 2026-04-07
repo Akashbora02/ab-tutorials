@@ -10,32 +10,60 @@ function setStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function startTest(cls) {
+async function startTest(cls) {
 
-  const isRegistered = localStorage.getItem("studentRegistered") === "true";
-
-  // ✅ ALSO allow if name exists (fallback)
-  const savedName = localStorage.getItem("studentName");
-
-  if (!isRegistered && !savedName) {
-    alert("Please register first!");
-    window.location.href = "contact.html";
-    return;
-  }
-
-  const name = document.getElementById("studentName").value;
+  const name = document.getElementById("studentName").value.trim();
 
   if (!name) {
     alert("Enter your name");
     return;
   }
 
-  // ✅ Save both
-  localStorage.setItem("studentName", name);
-  localStorage.setItem("studentRegistered", "true");
-  localStorage.setItem("testClass", cls);
+  // 🔗 Fetch admission sheet
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTy7rxJ4jHwrDtTbfXXnJIabVXYbbZrUCM6SrQg-DiFrrhuaAzWSqP-rswa1EHDQrTHT24BsH4VhSCU/pub?output=csv";
 
-  window.location.href = "test.html";
+  try {
+    const res = await fetch(sheetURL);
+    const data = await res.text();
+
+    const rows = data.split("\n").slice(1);
+
+    let found = false;
+
+    rows.forEach(row => {
+      const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+      if (!cols) return;
+
+      const studentName = clean(cols[1]).toLowerCase();
+      const studentClass = clean(cols[8]);
+
+      // ✅ MATCH NAME + CLASS
+      if (
+        studentName === name.toLowerCase() &&
+        studentClass.includes(`Class ${cls}`)
+      ) {
+        found = true;
+      }
+    });
+
+    if (!found) {
+      alert("❌ You are not registered OR class mismatch!\nPlease take admission first.");
+      window.location.href = "contact.html";
+      return;
+    }
+
+    // ✅ PASS → START TEST
+    localStorage.setItem("studentName", name);
+    localStorage.setItem("testClass", cls);
+    localStorage.removeItem("answers");
+    localStorage.removeItem("questions");
+    window.location.href = "test.html";
+
+  } catch (err) {
+    alert("Error checking registration");
+    console.error(err);
+  }
 }
 
 /* SAMPLE QUESTIONS (10 EACH) */
@@ -84,6 +112,7 @@ let current = 0, answers = [];
 
 
 function initTest() {
+  timeLeft = TEST_DURATION; // 👈 FIX
   current = 0;
   const cls = localStorage.getItem("testClass");
 
@@ -192,7 +221,7 @@ function submitTest() {
   if (!confirm("Are you sure you want to submit?")) return;
 
   clearInterval(timerInterval);
-  document.querySelector(".submit-btn").disabled = true; // 👈 add
+  if (document.querySelector(".submit-btn").disabled) return;
 
   let score = 0;
   questions.forEach((q, i) => {

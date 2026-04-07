@@ -135,16 +135,22 @@ function loadTestResults() {
       rows.forEach(row => {
         if (!row.trim()) return;
 
-        const cols = row.split(",");
+        const cols = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
+        // CLEAN ALL VALUES
+        const name = clean(cols[0]);
+        const cls = clean(cols[1]);
+        const score = clean(cols[2]);
+        const total = clean(cols[3]);
+        const date = clean(cols[4]); // 👈 FIXED
         // 🧱 Create row
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-          <td>${cols[0]}</td>
-          <td>Class ${cols[1]}</td>
-          <td>${cols[2]}/${cols[3]}</td>
-          <td>${cols[4]}</td>
+          <td>${name}</td>
+          <td>Class ${cls}</td>
+          <td>${score}/${total}</td>
+          <td>${date}</td>
         `;
 
         // 🔘 Create delete button column
@@ -156,7 +162,7 @@ function loadTestResults() {
 
         // ✅ Safe event (no syntax error)
         btn.addEventListener("click", () => {
-          deleteResultFromSheet(cols[0], cols[4]);
+          deleteResultFromSheet(name, date);
         });
 
         td.appendChild(btn);
