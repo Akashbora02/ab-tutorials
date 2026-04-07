@@ -267,7 +267,7 @@ function submitTest() {
   const submitBtn = document.querySelector(".submit-btn");
   if (submitBtn.disabled) return;
 
-  submitBtn.disabled = true; // ✅ prevent double submit
+  submitBtn.disabled = true;
 
   clearInterval(timerInterval);
 
@@ -279,14 +279,13 @@ function submitTest() {
   const name = localStorage.getItem("studentName");
   const cls = localStorage.getItem("testClass");
 
-  // ✅ UNIQUE ID
   const id = Date.now();
 
   const resultData = {
-    id: id,
-    name: name,
+    id,
+    name,
     class: cls,
-    score: score,
+    score,
     total: questions.length,
     date: new Date().toLocaleString()
   };
@@ -294,32 +293,35 @@ function submitTest() {
   document.getElementById("resultBox").innerHTML =
     `<h3>🎉 Score: ${score}/${questions.length}</h3>`;
 
-  console.log("Sending data:", resultData); // 🔍 DEBUG
+  console.log("Sending data:", resultData);
 
-  // ✅ SAVE TO GOOGLE SHEET
   fetch("https://script.google.com/macros/s/AKfycbzKJtUGjkMVRIOkJ7AcXSYLlZSDzdoDqPm7rUV0fIWExWSqqZD_FftHi_1Y2tzy6JnQ/exec", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
     body: JSON.stringify(resultData)
   })
-    .then(res => res.json()) // ✅ IMPORTANT
-    .then(data => {
+    .then(res => res.text()) // ✅ FIX
+    .then(text => {
 
-      console.log("SAVE RESPONSE:", data);
+      console.log("RAW RESPONSE:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Invalid JSON");
+      }
 
       if (data.status === "success") {
         alert("✅ Result saved successfully");
       } else {
         alert("❌ Failed to save result");
-        submitBtn.disabled = false; // allow retry
+        submitBtn.disabled = false;
       }
 
     })
     .catch(err => {
       console.error("SAVE ERROR:", err);
-      alert("❌ Network error while saving");
+      alert("❌ Network / Script error");
       submitBtn.disabled = false;
     });
 
